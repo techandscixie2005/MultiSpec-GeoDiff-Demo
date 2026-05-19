@@ -1,6 +1,6 @@
 {
   "demo_name": "MultiSpec-GeoDiff Stage-I Demo",
-  "timestamp": "2026-05-19T15:13:24Z",
+  "timestamp": "2026-05-19T15:44:31Z",
   "data_file": "04_data/IR_nist_200.jsonl",
   "num_molecules": 200,
   "query_id": 5,
