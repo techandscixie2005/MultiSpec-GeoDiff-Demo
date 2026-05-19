@@ -1,5 +1,15 @@
 # MultiSpec-GeoDiff: Stage-I Demo for Spectra-driven Molecular Structure Inversion
 
+> **Final DP Technology internship demo submission.**
+
+**Final submission entry:**
+- Project proposal: [`01_project_proposal/proposal.md`](01_project_proposal/proposal.md)
+- Demo report: [`02_demo_document/demo_report.md`](02_demo_document/demo_report.md)
+- Main command: `python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5`
+- Tests: `PYTHONPATH=03_code/src pytest 03_code/tests -q`
+
+---
+
 ## What this demo shows
 
 This demo validates Stage-I feasibility on **200 experimental NIST IR spectra**.

@@ -38,3 +38,6 @@ dist/
 *.xdv
 
 .DS_Store
+
+submission.pdf
+submission.pdf:Zone.Identifier
