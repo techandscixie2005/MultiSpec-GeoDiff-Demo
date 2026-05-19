@@ -1,0 +1,1 @@
+This directory contains an earlier toy IR/Raman prototype and is not part of the final DP Technology submission demo. The final reviewer-facing Stage-I NIST IR demo is under 03_code/, 04_data/, and 05_outputs/.
