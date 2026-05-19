@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-19T08:57:32.507264Z",
-  "git_commit_hash": "94938ae9dec1f511fac16974b4a8eccffcf0e7f8",
+  "timestamp": "2026-05-19T09:39:56.627501Z",
+  "git_commit_hash": "c51e5242bbb7946c37cc437de0f496fdcd8367d7",
   "input_files": {
     "query_ir": "/home/xiangyu_xie/DeepTech/data/samples/query_ir.csv",
     "query_raman": "/home/xiangyu_xie/DeepTech/data/samples/query_raman.csv",
@@ -44,13 +44,13 @@
       "name": "phenol",
       "smiles": "c1ccc(cc1)O",
       "formula": "C6H6O",
-      "final_score": 0.9304489304682033,
-      "ir_similarity": 0.9976214245331856,
-      "raman_similarity": 0.975394016600145,
+      "final_score": 0.9704489304682034,
+      "ir_similarity": 0.9976214245331854,
+      "raman_similarity": 0.9753940166001454,
       "peak_score": 0.9758154107144272,
       "mass_score": 0.85,
-      "validity": 0.6,
-      "notes": "RDKit unavailable; fallback validity score applied. | retrieval=0.989 | embed=0.997"
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.989 | embed=0.997"
     },
     {
       "rank": 2,
@@ -58,13 +58,13 @@
       "name": "aniline",
       "smiles": "Nc1ccccc1",
       "formula": "C6H7N",
-      "final_score": 0.7824029572117868,
-      "ir_similarity": 0.8208642126815935,
+      "final_score": 0.8224029572117867,
+      "ir_similarity": 0.8208642126815934,
       "raman_similarity": 0.9704030289511798,
       "peak_score": 0.6018867423797735,
       "mass_score": 0.7502920789650592,
-      "validity": 0.6,
-      "notes": "RDKit unavailable; fallback validity score applied. | retrieval=0.909 | embed=0.994"
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.909 | embed=0.994"
     },
     {
       "rank": 3,
@@ -72,13 +72,13 @@
       "name": "methyl benzoate",
       "smiles": "COC(=O)c1ccccc1",
       "formula": "C8H8O2",
-      "final_score": 0.5333200309040618,
-      "ir_similarity": 0.3770190413546227,
+      "final_score": 0.5733200309040617,
+      "ir_similarity": 0.37701904135462266,
       "raman_similarity": 0.8841583093683254,
       "peak_score": 0.5746778129754595,
       "mass_score": 0.15,
-      "validity": 0.6,
-      "notes": "RDKit unavailable; fallback validity score applied. | retrieval=0.680 | embed=0.979"
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.680 | embed=0.979"
     },
     {
       "rank": 4,
@@ -86,13 +86,13 @@
       "name": "benzene",
       "smiles": "c1ccccc1",
       "formula": "C6H6",
-      "final_score": 0.5074121162692085,
+      "final_score": 0.5474121162692084,
       "ir_similarity": 0.4390166889851702,
-      "raman_similarity": 0.8531685613656892,
-      "peak_score": 0.3769299364324255,
+      "raman_similarity": 0.8531685613656893,
+      "peak_score": 0.37692993643242545,
       "mass_score": 0.15,
-      "validity": 0.6,
-      "notes": "RDKit unavailable; fallback validity score applied. | retrieval=0.699 | embed=0.993"
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.699 | embed=0.993"
     },
     {
       "rank": 5,
@@ -100,13 +100,13 @@
       "name": "toluene",
       "smiles": "Cc1ccccc1",
       "formula": "C7H8",
-      "final_score": 0.5000947861739451,
+      "final_score": 0.540094786173945,
       "ir_similarity": 0.37342814690027437,
       "raman_similarity": 0.7457890826212878,
       "peak_score": 0.3549757017760904,
       "mass_score": 0.5262058003627054,
-      "validity": 0.6,
-      "notes": "RDKit unavailable; fallback validity score applied. | retrieval=0.631 | embed=0.991"
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.631 | embed=0.991"
     }
   ],
   "generated_output_files": [
@@ -123,29 +123,23 @@
   ],
   "environment": {
     "python": {
-      "version": "3.11.7",
-      "executable": "/home/xiangyu_xie/anaconda3/bin/python",
+      "version": "3.10.18",
+      "executable": "/home/xiangyu_xie/anaconda3/envs/graduation_project/bin/python",
       "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
     },
     "packages": {
-      "numpy": "1.26.4",
-      "pandas": "2.1.4",
-      "scipy": "1.11.4",
-      "sklearn": "1.2.2",
-      "matplotlib": "3.8.0",
-      "yaml": "6.0.1",
-      "rdkit": null,
-      "torch": null
+      "numpy": "2.2.5",
+      "pandas": "2.3.2",
+      "scipy": "1.15.3",
+      "sklearn": "1.7.1",
+      "matplotlib": "3.10.6",
+      "yaml": "6.0.2",
+      "rdkit": "2025.03.6",
+      "torch": "2.8.0+cu126"
     }
   },
-  "warnings": [
-    "RDKit unavailable: using text-only molecule visualization and fallback validity scoring.",
-    "PyTorch unavailable: using deterministic NumPy encoder."
-  ],
-  "fallback_modes": [
-    "no_rdkit",
-    "numpy_encoder"
-  ],
+  "warnings": [],
+  "fallback_modes": [],
   "config_snapshot": {
     "project_name": "MultiSpec-GeoDiff-Demo",
     "seed": 7,

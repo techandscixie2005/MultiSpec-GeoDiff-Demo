@@ -50,15 +50,26 @@
 \vspace{0.14em}
 {\normalsize\bfseries DP Technology / Deep Potential Internship Demo Submission\par}
 \vspace{0.22em}
-{\small 本项目已实现一个可运行、可追踪的 IR/Raman 谱图到候选分子结构反演 MVP：多模态谱图编码 $\rightarrow$ 候选召回/轻量生成 $\rightarrow$ 前向谱图一致性重排 $\rightarrow$ Top-K 分子输出，并提供 CLI、notebook、测试、可视化结果与 trace log。仓库：\url{https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo}。\par}
+{\small 本项目已实现一个可运行、可追踪的 IR/Raman 谱图到候选分子结构反演 MVP：多模态谱图编码 $\rightarrow$ 候选召回 $\rightarrow$ 前向谱图一致性重排 $\rightarrow$ Top-K 分子输出，并提供 CLI、notebook、测试、可视化结果与 trace log。仓库：\url{https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo}。\par}
 \vspace{0.25em}
+\hrule height 0.65pt
+\vspace{0.16em}
+
+\noindent{\small\bfseries\color{accentblue}Reviewer Quick Start}\par
+{\footnotesize\cmd{git clone https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo.git}\newline
+\cmd{cd MultiSpec-GeoDiff-Demo}\newline
+\cmd{python -m pip install -r requirements.txt}\newline
+\cmd{python scripts/run_demo.py --config configs/demo.yaml}\newline
+\cmd{python scripts/validate_outputs.py --output_dir outputs}\newline
+\cmd{python -m pytest -q}}\par
+\vspace{0.16em}
 \hrule height 0.65pt
 \vspace{0.16em}
 \small
 
 \sectitle{1. 项目提议}
 \labelp{具体目标}当前已完成一个 reviewer-facing runnable MVP：输入双模态 IR/Raman 谱图，输出 Top-K 候选分子、前向一致性分数、可视化结果与结构化 trace log。\par
-\labelp{核心价值}方案以 \textit{coordinate-aware spectral encoder}、candidate retrieval / lightweight generation 与 \textit{forward-spectrum reranking} 组成可审计闭环，比直接单步翻译为 SMILES 更适合 AI4S demo。\par
+\labelp{核心价值}方案以 \textit{coordinate-aware spectral encoder}、candidate retrieval 与 \textit{forward-spectrum reranking} 组成可审计闭环，比直接单步翻译为 SMILES 更适合 AI4S demo。\par
 \labelp{可行性简析}GitHub 仓库中的 \cmd{python scripts/run_demo.py --config configs/demo.yaml}、\cmd{python scripts/validate_outputs.py --output_dir outputs} 与 \cmd{python -m pytest -q} 均已通过；graph diffusion、pairwise distance 与 parity-aware TFN-Transformer 仍明确属于 roadmap-only。\par
 
 \sectitle{2. Demo 已实现内容}
@@ -74,7 +85,7 @@
 \textbf{A. 已实现 MVP}
 \begin{itemize}
   \item multi-modal IR/Raman input，spectral coordinate PE，模态内 $\Delta\nu$ relative distance bias attention；
-  \item cross-modal fusion（不显式加入 coordinate bias）、candidate retrieval / lightweight generation；
+  \item cross-modal fusion（不显式加入 coordinate bias）、candidate retrieval；
   \item forward spectrum scorer + reranker，输出 Top-K、attention heatmaps 与 trace log。
 \end{itemize}
 \textbf{B. 后续扩展模块}
@@ -111,6 +122,43 @@
 \end{table}
 
 \sectitle{5. 仓库与复现方式}
-仓库地址：\url{https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo}。复现命令为 \cmd{python scripts/run_demo.py --config configs/demo.yaml}、\cmd{python scripts/validate_outputs.py --output_dir outputs} 与 \cmd{python -m pytest -q}；notebook 位于 \cmd{notebooks/demo_pipeline.ipynb}。当前 \cmd{outputs/topk_candidates.csv}、\cmd{outputs/trace_log.json} 与配套图像文件均已生成且非空。限制方面：样例数据仍是 toy synthetic spectra，不代表真实实验 benchmark；当前环境采用 RDKit / Torch fallback；graph diffusion、pairwise distance 与 TFN-Transformer 仍为 roadmap stubs，因此本 demo 验证的是技术路径、工程闭环与可追踪性，而非 production-level performance。\par
+仓库地址：\url{https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo}。复现命令为 \cmd{python scripts/run_demo.py --config configs/demo.yaml}、\cmd{python scripts/validate_outputs.py --output_dir outputs} 与 \cmd{python -m pytest -q}；notebook 位于 \cmd{notebooks/demo_pipeline.ipynb}。
+
+\vspace{0.2em}
+\noindent\textbf{Reviewer-facing outputs}\par
+\vspace{0.1em}
+{\scriptsize
+\renewcommand{\tabcolsep}{2pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.64\linewidth}}
+\toprule
+\textbf{File} & \textbf{Content} \\
+\midrule
+\cmd{outputs/topk_candidates.csv} & Top-K candidates with per-component scores \\
+\cmd{outputs/trace_log.json}     & Trace: git hash, config, env, warnings \\
+\cmd{outputs/query_spectra.png}  & Input IR/Raman query spectra \\
+\cmd{outputs/spectrum_match_top1.png} & Top-1 candidate vs query overlay \\
+\cmd{outputs/topk_spectrum_overlay.png} & All Top-K spectra vs query overlay \\
+\cmd{outputs/attention_heatmap_ir.png} & IR intra-modal attention heatmap \\
+\cmd{outputs/attention_heatmap_raman.png} & Raman intra-modal attention heatmap \\
+\cmd{outputs/demo_summary_panel.png} & Consolidated visual summary \\
+\cmd{outputs/demo_summary.md}    & One-line text result summary \\
+\bottomrule
+\end{tabular}\par}
+
+\vspace{0.4em}
+\noindent{\color{accentblue}\hrule height 0.55pt}\par
+\vspace{0.1em}
+\noindent\textbf{Limitations}\par
+\vspace{0.06em}
+{\footnotesize
+\begin{itemize}
+  \item 样例数据仍是 toy synthetic spectra，不代表真实实验 benchmark。
+  \item 当前输出 Top-K 候选，非唯一确定结构。
+  \item 当前环境采用 RDKit fallback（文本可视化）\& Torch fallback（NumPy 编码器）。
+  \item graph diffusion、pairwise distance 与 TFN-Transformer 均为 roadmap stubs。
+  \item 本 demo 验证的是技术路径、工程闭环与可追踪性，而非 production-level performance。
+\end{itemize}\par}
+\vspace{0.1em}
+{\color{accentblue}\hrule height 0.55pt}
 
 \end{document}
