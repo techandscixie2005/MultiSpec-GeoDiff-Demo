@@ -50,7 +50,7 @@ jupyter notebook notebooks/demo_pipeline.ipynb
 - `graph diffusion`, `pairwise distance`, and `TFN-Transformer` are **roadmap-only stubs**, not trained modules.
 - The current environment uses fallback behavior because RDKit and Torch are not installed.
 
-## Git commit hash
+## Implementation commit hash
 - `12b9ea64f12a09e61e403989b73eae423b20977c`
 
 ## GitHub repository URL
