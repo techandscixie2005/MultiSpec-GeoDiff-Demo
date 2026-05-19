@@ -1,0 +1,20 @@
+\begin{table}[htbp]
+  \centering
+  \caption{Demo 里程碑规划}
+  \label{tab:milestones}
+  \small
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{>{\raggedright\arraybackslash}p{0.10\linewidth} >{\raggedright\arraybackslash}p{0.22\linewidth} >{\raggedright\arraybackslash}p{0.28\linewidth} >{\raggedright\arraybackslash}p{0.28\linewidth}}
+    \toprule
+    ID & 里程碑 & 目标 & 预期交付物 \\
+    \midrule
+    M1 & Document package & 固定 proposal 结构、图注、风险边界与构建方式 & LaTeX 文档包、README、build report \\
+    M2 & Minimal data pipeline & 统一输入谱图格式、样例数据与预处理接口 & 输入样例、预处理脚本或 notebook 单元 \\
+    M3 & Spectrum encoder forward pass & 跑通 coordinate-aware encoder 的前向流程 & 编码张量、trace log、模块说明 \\
+    M4 & Candidate retrieval / generation & 建立候选召回与基础化学过滤闭环 & 候选列表、合法性过滤结果 \\
+    M5 & Forward spectrum reranking & 使用近似前向谱图或模板完成 Top-K 重排 & Top-K csv、相似度分数、对比图 \\
+    M6 & Visualization and trace log & 输出结果面板与可追踪日志 & 分子网格图、谱图叠图、trace\_log.json \\
+    M7 & Optional graph diffusion prototype & 预留未来 insert/delete graph diffusion 原型接口 & 原型说明、伪代码或最小实验记录 \\
+    \bottomrule
+  \end{tabular}
+\end{table}

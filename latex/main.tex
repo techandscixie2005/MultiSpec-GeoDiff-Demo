@@ -1,0 +1,113 @@
+\documentclass[11pt,a4paper,fontset=none]{ctexart}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{array}
+
+\definecolor{accentblue}{HTML}{2F5D80}
+\definecolor{softblue}{HTML}{EEF5FA}
+\definecolor{linegray}{HTML}{D8E3EC}
+\definecolor{darktext}{HTML}{243746}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accentblue,
+  citecolor=accentblue,
+  urlcolor=accentblue,
+  hypertexnames=false,
+  pdftitle={MultiSpec-GeoDiff: 多模态谱图驱动的分子结构反演 Demo},
+  pdfauthor={OpenAI Codex for DeepTech Demo Proposal}
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\linespread{1.12}
+
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros}
+\setmonofont{Latin Modern Mono}
+\setCJKmainfont[AutoFakeBold=2,AutoFakeSlant=0.2]{Microsoft YaHei}
+\setCJKsansfont[AutoFakeBold=2]{Microsoft YaHei}
+\setCJKmonofont{DengXian}
+\setCJKfamilyfont{zhkai}{KaiTi}
+\newcommand{\kai}{\CJKfamily{zhkai}}
+
+\newtcolorbox{keybox}[1][]{
+  enhanced,
+  breakable,
+  colback=softblue,
+  colframe=accentblue,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=1.5mm,
+  right=1.5mm,
+  top=1.0mm,
+  bottom=1.0mm,
+  title=#1,
+}
+
+\newcommand{\placeholderfigure}[1]{%
+  \begin{tcolorbox}[
+    width=0.92\linewidth,
+    height=5.2cm,
+    colback=white,
+    colframe=accentblue!80!black,
+    boxrule=0.8pt,
+    arc=1.2mm,
+    valign=center,
+  ]
+  \centering
+  {\large\bfseries\color{accentblue}#1}
+  \end{tcolorbox}%
+}
+
+\newcommand{\projectname}{MultiSpec-GeoDiff}
+\newcommand{\projecttitle}{\projectname: 多模态谱图驱动的分子结构反演 Demo}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{2.8cm}
+  {\Huge\bfseries\color{accentblue}\projectname\par}
+  \vspace{0.4cm}
+  {\LARGE\bfseries 多模态谱图驱动的分子结构反演 Demo\par}
+  \vspace{1.0cm}
+  {\large DP Technology / Deep Potential 实习申请 Demo Proposal Package\par}
+  \vspace{1.8cm}
+  \begin{keybox}[项目定位]
+  本文档包面向“谱图到分子结构”反问题的最小可执行科学工作流展示：以多模态谱图为输入，先完成可追踪的候选生成/检索与前向谱图一致性重排闭环，再为未来的图扩散、pairwise distance 与 TFN-Transformer 三维几何建模预留清晰扩展路径。
+  \end{keybox}
+  \vfill
+  {\large 提交对象：DP Technology / Deep Potential Internship Application\par}
+  \vspace{0.4cm}
+  {\large 文档生成日期：\today\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+\input{sections/00_abstract}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\input{sections/01_proposal_500chars}
+\input{sections/02_background_and_motivation}
+\input{sections/03_demo_goal}
+\input{sections/04_method_overview}
+\input{sections/05_multimodal_encoder}
+\input{sections/06_candidate_generation_and_reranking}
+\input{sections/07_future_geometric_diffusion}
+\input{sections/08_demo_implementation_plan}
+\input{sections/09_validation_and_risks}
+\input{sections/10_conclusion}
+
+\clearpage
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+
+\end{document}

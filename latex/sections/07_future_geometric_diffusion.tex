@@ -1,0 +1,36 @@
+\section{未来扩展：几何扩散与 TFN-Transformer}
+完整版本的 MultiSpec-GeoDiff-TFN 将在当前 demo 闭环之上补齐 2D 生成、2D-to-3D 桥接与等变几何精修三层能力。第一层是可增删节点的 2D 图扩散：相较固定节点数的离散生成器，这类方法更适合谱图条件下的未知分子大小推断 \citep{Ninniri2025GrIDDD}。第二层是 pairwise distance 矩阵预测，它不直接输出绝对坐标，而是先预测满足旋转/平移不变性的距离表示，再通过 MDS 或 distance geometry 恢复初始构象。第三层则是 parity-aware TFN-Transformer，用以在三维空间中联合更新坐标与张量特征。
+
+从建模上看，pairwise distance 作为 2D 与 3D 之间的桥梁具有两个优势：一是它天然满足整体刚体变换不变性；二是它能与后续等变网络的相对距离、边偏置和局部几何编码自然衔接。初始构象恢复后，坐标更新可借鉴 EGNN 的相对坐标更新思想 \citep{Satorras2021EGNN}，而高阶特征表达与 attention 结构则可参考 Equiformer / EquiformerV2 一类基于 irreps 的等变 Transformer \citep{Liao2022Equiformer,Liao2024EquiformerV2}。
+
+在 TFN-Transformer 模块中，可为每个原子维护 $0e,0o,1e,1o,2e,2o$ 等奇偶-阶数组合通道。直观地说，偶宇称标量/向量用于表达常规几何与化学环境，奇宇称 pseudoscalar 通道则为 CD/VCD 等手性敏感模态预留表达能力。attention 权重本身仍由不变量标量控制，但消息内容可由张量内积、边偏置与距离偏置共同调制。未来若接入更高保真的 forward model，则可进一步把 DetaNet 类张量谱预测能力并入后验打分环节 \citep{Zou2023DetaNet}。
+
+需要强调的是，本节内容属于\emph{未来扩展}：它展示项目从可运行 demo 向完整科学模型延伸的合理路径，而非当前已完成实现。当前文档只要求把这些接口、科学动机与验证方向表达清楚。
+
+\begin{figure}[htbp]
+  \centering
+  \input{figures/placeholder_future_geometry.tex}
+  \caption{Future extension: insert/delete graph diffusion generates 2D graphs; pairwise distances initialize 3D geometry; TFN-Transformer refines coordinates and tensor features.}
+\end{figure}
+
+\begin{keybox}[未来完整路径]
+{\small
+\[
+\begin{aligned}
+&\text{multi-modal spectra}
+\rightarrow
+\text{insert/delete 2D graph diffusion}\\
+&\rightarrow
+\text{pairwise distance matrix}
+\rightarrow
+\text{distance geometry init}\\
+&\rightarrow
+\text{TFN-Transformer refinement}
+\rightarrow
+\text{physics-informed forward spectrum prediction}\\
+&\rightarrow
+\text{Top-K candidates}
+\end{aligned}
+\]
+}
+\end{keybox}

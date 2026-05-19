@@ -1,0 +1,28 @@
+\section{Demo 目标与边界}
+本 demo 的目标不是直接声称“完整的 MultiSpec-GeoDiff / MultiSpec-GeoDiff-TFN 已训练完成”，而是验证一条最小可执行且具备科研解释力的谱图反演闭环。当前版本优先实现的内容如下：
+\begin{enumerate}
+  \item 支持 IR/Raman 为主的输入格式与基础预处理；
+  \item 使用横坐标感知的谱图编码器生成全局条件向量与 token 级条件序列；
+  \item 通过候选库检索或轻量候选生成器得到可重排的分子集合；
+  \item 使用轻量前向谱图打分器与 RDKit 合法性规则完成 Top-K 重排；
+  \item 生成可视化结果与 trace log，保证运行流程可复查。
+\end{enumerate}
+
+未来扩展部分则包括：可增删节点的 2D 图扩散、pairwise distance 预测、距离几何三维初始化、parity-aware TFN-Transformer 精修以及更强的 physics-informed forward spectrum prediction。文中所有这类内容都将明确标注为“未来扩展”或“完整版本路线”，而非当前已交付模块。
+
+本次提交的预期输出包括：
+\begin{itemize}
+  \item 一套可编译的 LaTeX proposal package；
+  \item 一段可直接粘贴到申请表中的 500 字内中文提议；
+  \item 占位图、里程碑表与验证计划；
+  \item 对后续代码 demo 的目录、输入输出与风险边界说明。
+\end{itemize}
+
+\begin{keybox}[不作出的声明]
+\begin{itemize}
+  \item 不宣称完整 diffusion 或 TFN 模型已经训练完成；
+  \item 不宣称已经获得大规模实验结果或 SOTA 指标；
+  \item 不把 Top-K 候选误写成唯一正确结构；
+  \item 不把未来三维与手性模块描述成当前可用能力。
+\end{itemize}
+\end{keybox}

@@ -1,0 +1,43 @@
+project_name: MultiSpec-GeoDiff-Demo
+seed: 7
+input:
+  query_ir: data/samples/query_ir.csv
+  query_raman: data/samples/query_raman.csv
+  candidate_library: data/samples/candidate_library.csv
+  query_metadata:
+    approximate_mass: 94.11
+    formula: null
+    target_hint: phenol
+preprocess:
+  wavenumber_min: 400.0
+  wavenumber_max: 4000.0
+  wavenumber_step: 4.0
+  normalize: max
+  smoothing_window: 11
+  smoothing_polyorder: 2
+  peak_threshold: 0.34
+  allow_missing_modalities: true
+encoder:
+  hidden_dim: 16
+  num_rbf: 8
+  bias_sigma: 180.0
+  attention_scale: 0.75
+  conv_kernel_sizes: [3, 5, 9]
+retrieval:
+  top_m: 8
+  similarity_weights:
+    ir: 0.55
+    raman: 0.45
+  embedding_weight: 0.2
+  mass_tolerance: 2.5
+rerank:
+  top_k: 5
+  weights:
+    ir_similarity: 0.34
+    raman_similarity: 0.24
+    peak_score: 0.20
+    mass_score: 0.12
+    validity: 0.10
+outputs:
+  output_dir: outputs
+  write_demo_summary_md: true

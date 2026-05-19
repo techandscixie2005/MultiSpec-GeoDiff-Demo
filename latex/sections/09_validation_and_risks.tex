@@ -1,0 +1,37 @@
+\section{验证方案与主要风险}
+验证部分分为\textbf{demo 闭环验证}与\textbf{未来模型验证}两层。当前 demo 阶段优先回答三个问题：第一，候选检索/生成是否能覆盖合理候选；第二，前向谱图一致性重排是否能提升候选排序质量；第三，整条流程是否留下足够完备的 trace 信息用于复查。围绕这三个问题，建议使用以下指标：
+\begin{itemize}
+  \item Top-K accuracy / recall；
+  \item 谱图相似度（余弦相似度、峰匹配得分或相关系数）；
+  \item 分子式/质量匹配率；
+  \item 官能团匹配率；
+  \item RDKit validity 与化学规则通过率；
+  \item reranking gain（重排前后 Top-1 / Top-K 提升）。
+\end{itemize}
+对于未来完整模型，还可增加 pairwise distance MAE、3D RMSD、chirality consistency、构象覆盖率等几何指标。
+
+主要风险包括：
+\begin{enumerate}
+  \item \textbf{实验噪声与域偏移}：实验谱图与模拟/公开小样本之间可能存在系统差异；
+  \item \textbf{一谱多解歧义}：不同结构可能共享相似谱图特征；
+  \item \textbf{数据稀缺}：多模态联合样本、尤其带高质量 3D/手性标注的数据有限；
+  \item \textbf{过度承诺风险}：若不区分 demo 与 future module，容易在文档中形成不实暗示；
+  \item \textbf{3D/手性信息不完整}：仅凭 2D 候选或单模态信息往往不足以完全恢复立体信息。
+\end{enumerate}
+
+针对上述风险，本文档建议采用以下缓解策略：
+\begin{itemize}
+  \item 以 Top-K 候选而非单解输出承载不确定性；
+  \item 用前向谱图一致性和 trace log 提高结果可解释性；
+  \item 在公开小规模可控数据上先做消融与闭环验证；
+  \item 对所有“未来扩展”模块明确标注，避免把路线图写成已得结果；
+  \item 在后续阶段引入模态 dropout、候选覆盖分析与人工审查接口。
+\end{itemize}
+
+\begin{keybox}[推荐验证顺序]
+\begin{enumerate}
+  \item 先验证输入--候选--重排闭环是否可运行；
+  \item 再比较“无重排 / 有重排”的排序提升；
+  \item 最后在小样本上分析失败案例与缺模态鲁棒性。
+\end{enumerate}
+\end{keybox}

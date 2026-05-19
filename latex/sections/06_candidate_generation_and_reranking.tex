@@ -1,0 +1,29 @@
+\section{候选生成与前向一致性重排}
+MVP 阶段的关键任务不是直接训练完整分子扩散模型，而是尽快建立可验证的候选闭环。因此当前 demo 采用两类可替代策略：
+\begin{enumerate}
+  \item \textbf{候选库检索}：依据谱图编码向量、分子式约束、质量窗口或简单谱峰特征，从公开库中召回若干候选分子；
+  \item \textbf{轻量候选生成}：在需要时引入规则驱动或小模型生成器补充候选多样性。
+\end{enumerate}
+
+候选集合生成后，先通过 RDKit 类化学规则执行基本过滤，包括价态合法性、芳香性/键类型合法性、分子式与质量范围匹配等，再交由前向谱图打分器进行一致性排序。对于 2D demo，前向打分器可以采用两种低风险实现：
+\begin{itemize}
+  \item 基于候选库已有谱图或近邻模板的相似度打分；
+  \item 基于轻量 GNN 的近似前向谱图预测，再与 query 谱图计算余弦相似度或加权峰匹配得分。
+\end{itemize}
+重排输出不是未经验证的单个结构，而是带有解释分数的 Top-K 候选分子集合。这样更符合一谱多解的实际场景，也为后续人工审查或高保真计算留出了接口。
+
+从系统演化角度看，当前的候选检索/轻量生成模块可视为未来可增删节点图扩散的受控代理：接口保持一致，但实现复杂度和计算成本显著更低。随着数据与算力条件成熟，后续可以把该模块替换为条件化的 insert/delete graph diffusion，而无需重写后续重排与验证层。
+
+\begin{figure}[htbp]
+  \centering
+  \input{figures/placeholder_demo_pipeline.tex}
+  \caption{Minimum viable demo pipeline: query spectra, candidate library/generator, forward spectrum scorer, and Top-K visualization.}
+\end{figure}
+
+\begin{keybox}[重排评分建议]
+可组合使用
+\[
+\mathrm{Score}(g)=\lambda_1\,s_{\mathrm{spec}}+\lambda_2\,s_{\mathrm{formula}}+\lambda_3\,s_{\mathrm{chem}}+\lambda_4\,s_{\mathrm{prior}},
+\]
+其中 $s_{\mathrm{spec}}$ 为谱图一致性，$s_{\mathrm{formula}}$ 为分子式/质量匹配，$s_{\mathrm{chem}}$ 为化学有效性，$s_{\mathrm{prior}}$ 为来自候选召回阶段的先验得分。该形式便于后续做模态权重学习与消融实验。
+\end{keybox}

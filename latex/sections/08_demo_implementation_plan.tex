@@ -1,0 +1,40 @@
+\section{Demo 实施计划与交付物}
+文档层面，本次交付首先产出一个自包含的 XeLaTeX 文档包，用于固定 proposal 结构、图示位置、里程碑和验证标准；代码层面，则为后续 notebook / script demo 预留目录与输出接口。建议的仓库交付物分为两层：
+\begin{itemize}
+  \item \textbf{当前已生成的文档包}
+  \begin{itemize}
+    \item \texttt{latex/}
+    \item 根目录 \texttt{README.md}
+    \item \texttt{docs/Demo\_Documentation\_Build\_Report.md}
+  \end{itemize}
+  \item \textbf{后续 demo 运行产物}
+  \begin{itemize}
+    \item \texttt{outputs/topk\_candidates.csv}
+    \item \texttt{outputs/spectrum\_match.png}
+    \item \texttt{outputs/molecule\_grid.png}
+    \item \texttt{outputs/trace\_log.json}
+  \end{itemize}
+\end{itemize}
+
+\begin{keybox}[建议目录视图]
+\begin{itemize}
+  \item \texttt{latex/main.tex}
+  \item \texttt{latex/sections/}
+  \item \texttt{latex/figures/}
+  \item \texttt{latex/tables/}
+  \item \texttt{latex/refs.bib}
+  \item \texttt{latex/Makefile}
+\end{itemize}
+\end{keybox}
+
+建议将开发过程按里程碑推进：先稳定文档与接口，再补齐最小数据流、编码器 forward、候选生成与重排，可视化与 trace log 最后闭环。对应里程碑见表~\ref{tab:milestones}。
+
+\input{tables/milestones}
+
+此外，文档中所有图均先以占位框表示，方便后续替换为正式架构图、流程图和结果图。建议在实际补图时统一采用英文图内标签、中文正文解释的形式，保证技术感与国际化可读性兼顾。
+
+\begin{figure}[htbp]
+  \centering
+  \input{figures/placeholder_output_visualization.tex}
+  \caption{Expected demo outputs: input spectrum, Top-K molecular candidates, spectrum overlay, and trace log.}
+\end{figure}

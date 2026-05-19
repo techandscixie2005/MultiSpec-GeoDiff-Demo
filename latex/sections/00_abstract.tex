@@ -1,0 +1,12 @@
+\section*{摘要}
+\addcontentsline{toc}{section}{摘要}
+实验谱图到分子结构的反演是化学分析中的核心难题，其本质是受噪声、模态缺失与一谱多解影响的逆问题。\projectname{} 将输入从单一谱图扩展为 IR/Raman/NMR/MS 等多模态证据，并将结构输出从单条 SMILES 提升为“候选分子图 + 前向一致性重排”的可验证工作流。当前 demo 重点验证四个环节：横坐标感知的多模态谱图编码、候选分子生成/检索、前向谱图一致性评分以及 Top-K 可视化与 trace log。未来完整版本将进一步引入可增删节点的 2D 图扩散、pairwise distance 矩阵预测、距离几何三维初始化，以及 parity-aware TFN-Transformer 精修模块，用以统一处理几何约束、张量特征与手性信息。本文档包的目标不是声称完整大模型已经训练完成，而是给出一条最小可执行、可追踪、可扩展的 AI for Science demo 路线。 
+
+\begin{keybox}[摘要要点]
+\begin{itemize}
+  \item 问题定义：多模态谱图驱动的小分子结构反演；
+  \item 当前目标：验证“编码--候选--前向一致性--Top-K”最小闭环；
+  \item 未来扩展：graph diffusion、distance geometry、TFN-Transformer；
+  \item Demo 价值：可执行、可审计、适合实习申请场景的科学工作流展示。
+\end{itemize}
+\end{keybox}

@@ -1,0 +1,41 @@
+\section{多模态谱图编码器}
+编码器的设计目标是把不同仪器模态下的谱图统一为可供分子生成与重排使用的条件表示，同时尽量保留每个模态自身的物理坐标语义。对第 $m$ 个模态，记输入为
+\[
+S^{(m)} = \{(\nu_i^{(m)}, I_i^{(m)})\}_{i=1}^{L_m},
+\]
+其中 $\nu_i^{(m)}$ 是真实横坐标（如 cm$^{-1}$、ppm 或 $m/z$），$I_i^{(m)}$ 是对应强度。首先使用一维 CNN stem 提取局部峰形、肩峰、带宽与局部噪声模式，再叠加模态 embedding 与绝对横坐标编码：
+\[
+H_i^{(m,0)} = \operatorname{CNN}_m(S^{(m)})_i + e_m + p_m(\nu_i^{(m)}).
+\]
+这里的 $p_m(\nu)$ 由真实物理坐标而非 token 序号驱动，从而显式区分不同波数、化学位移或质荷比区域的结构意义。
+
+模态内 attention 使用带相对谱图距离偏置的形式：
+\[
+A_{ij}^{(m)} = \operatorname{softmax}_j\left(\frac{Q_i^{(m)}K_j^{(m)\top}}{\sqrt{d}} + b_m\left(|\nu_i^{(m)}-\nu_j^{(m)}|\right)\right).
+\]
+该偏置反映同一模态内部峰间相对位置关系的重要性，例如 IR 中不同振动区间的组合证据往往比孤立峰值更稳定。跨模态 attention 则不直接引入坐标距离偏置：
+\[
+\widetilde{A}_{ij}^{(m\rightarrow n)} = \operatorname{softmax}_j\left(\frac{Q_i^{(m)}K_j^{(n)\top}}{\sqrt{d}}\right), \quad m \neq n,
+\]
+因为不同模态的横坐标处于不同物理坐标系中，直接比较绝对距离通常没有意义。跨模态层更适合学习“哪个模态的哪段证据可以互补解释另一个模态”的关系。
+
+为了适应真实实验场景，编码器还需支持缺失模态输入。具体做法是：
+\begin{itemize}
+  \item 训练时使用 modality dropout；
+  \item 推理时为缺失模态注入 mask token 与存在性标记；
+  \item 输出同时包含全局条件向量 $c$ 与 token 级条件序列 $C$，便于后续候选生成与重排模块按需调用。
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \input{figures/placeholder_multimodal_encoder.tex}
+  \caption{Coordinate-aware multi-modal spectral encoder. Intra-modal attention uses spectral-coordinate bias, while cross-modal attention does not use coordinate-distance bias.}
+\end{figure}
+
+\begin{keybox}[编码器输出]
+\begin{itemize}
+  \item \textbf{全局条件向量 $c$}：用于候选召回、检索与全局先验判断；
+  \item \textbf{token 级条件序列 $C$}：用于候选细粒度打分或未来扩散过程中的逐步条件注入；
+  \item \textbf{模态 mask 信息}：显式记录哪些证据缺失，避免模型错误地把“无数据”解释为“无信号”。
+\end{itemize}
+\end{keybox}

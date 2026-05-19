@@ -1,0 +1,37 @@
+\section{方法总览}
+\projectname{} 的核心思想是：不再把谱图看作需要直接翻译成分子字符串的“语言 token”，而是将其视为对分子图、几何与物理响应的多源观测。完整概念路径可写为
+\[
+\mathcal{S}_{\mathrm{multi}}
+\rightarrow
+(c, C)
+\rightarrow
+\mathcal{G}_{\mathrm{cand}}
+\rightarrow
+D
+\rightarrow
+R^{(0)}
+\rightarrow
+R
+\rightarrow
+\hat{\mathcal{S}}
+\rightarrow
+\mathrm{Top\mbox{-}K},
+\]
+其中 $\mathcal{S}_{\mathrm{multi}}$ 为多模态谱图，$(c, C)$ 分别表示全局条件向量与 token 级条件序列，$\mathcal{G}_{\mathrm{cand}}$ 为候选分子集合，$D$ 为 pairwise distance 矩阵，$R^{(0)}$ 为距离几何恢复的初始 3D 构象，$R$ 为等变精修后的几何表示，$\hat{\mathcal{S}}$ 为候选分子的前向预测谱图。
+
+当前 demo 仅显式实现到 $\mathcal{G}_{\mathrm{cand}} \rightarrow \hat{\mathcal{S}} \rightarrow \mathrm{Top\mbox{-}K}$ 的最小闭环；但从文档设计上，后续 2D graph diffusion、pairwise distance 与 TFN-Transformer 的接口已经一并预留。这样既可以在短周期内提交一个可跑通的原型，也能展示项目向更完整科学模型演化的技术路线。
+
+\begin{figure}[htbp]
+  \centering
+  \input{figures/placeholder_overall_architecture.tex}
+  \caption{Overall architecture of MultiSpec-GeoDiff: multi-modal spectra are encoded, candidate molecules are generated or retrieved, forward spectra are predicted, and Top-K candidates are reranked.}
+\end{figure}
+
+\begin{keybox}[方法分层]
+\begin{enumerate}
+  \item \textbf{谱图层}：尊重真实横坐标与模态差异；
+  \item \textbf{候选层}：先得到可验证的候选集合，而非单点猜测；
+  \item \textbf{几何层}：用 pairwise distance 连接 2D 图与 3D 结构；
+  \item \textbf{验证层}：通过前向谱图一致性与化学规则完成后验重排。
+\end{enumerate}
+\end{keybox}

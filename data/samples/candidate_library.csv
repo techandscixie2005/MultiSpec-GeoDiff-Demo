@@ -1,0 +1,13 @@
+molecule_id,name,smiles,formula,approximate_mass,functional_group_tags,ir_path,raman_path,notes
+mol_01,benzene,c1ccccc1,C6H6,78.11,aromatic,library_spectra/mol_01_ir.csv,library_spectra/mol_01_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_02,toluene,Cc1ccccc1,C7H8,92.14,"aromatic,methyl",library_spectra/mol_02_ir.csv,library_spectra/mol_02_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_03,phenol,c1ccc(cc1)O,C6H6O,94.11,"aromatic,hydroxyl",library_spectra/mol_03_ir.csv,library_spectra/mol_03_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_04,aniline,Nc1ccccc1,C6H7N,93.13,"aromatic,amine",library_spectra/mol_04_ir.csv,library_spectra/mol_04_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_05,ethanol,CCO,C2H6O,46.07,alcohol,library_spectra/mol_05_ir.csv,library_spectra/mol_05_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_06,dimethyl ether,COC,C2H6O,46.07,ether,library_spectra/mol_06_ir.csv,library_spectra/mol_06_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_07,acetone,CC(=O)C,C3H6O,58.08,ketone,library_spectra/mol_07_ir.csv,library_spectra/mol_07_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_08,acetaldehyde,CC=O,C2H4O,44.05,aldehyde,library_spectra/mol_08_ir.csv,library_spectra/mol_08_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_09,acetic acid,CC(=O)O,C2H4O2,60.05,carboxylic_acid,library_spectra/mol_09_ir.csv,library_spectra/mol_09_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_10,ethyl acetate,CCOC(=O)C,C4H8O2,88.11,ester,library_spectra/mol_10_ir.csv,library_spectra/mol_10_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_11,propanol,CCCO,C3H8O,60.1,alcohol,library_spectra/mol_11_ir.csv,library_spectra/mol_11_raman.csv,Toy Gaussian-template spectra for demo only.
+mol_12,methyl benzoate,COC(=O)c1ccccc1,C8H8O2,136.15,"aromatic,ester",library_spectra/mol_12_ir.csv,library_spectra/mol_12_raman.csv,Toy Gaussian-template spectra for demo only.

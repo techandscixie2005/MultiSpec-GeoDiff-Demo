@@ -1,0 +1,11 @@
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+pyyaml
+pytest
+tqdm
+notebook
+# optional: rdkit
+# optional: torch

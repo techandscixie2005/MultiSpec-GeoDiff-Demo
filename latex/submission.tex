@@ -1,0 +1,142 @@
+\documentclass[10pt,a4paper,fontset=none]{ctexart}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,array,tabularx}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\definecolor{accentblue}{HTML}{2F4858}
+\definecolor{linegray}{HTML}{D9E1E8}
+\definecolor{grayfill}{HTML}{F5F7F9}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accentblue,
+  citecolor=accentblue,
+  urlcolor=accentblue,
+  hypertexnames=false,
+  pdftitle={MultiSpec-GeoDiff Submission Version},
+  pdfauthor={OpenAI Codex}
+}
+
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros}
+\setmonofont{Latin Modern Mono}
+\setCJKmainfont[AutoFakeBold=2,AutoFakeSlant=0.2]{Microsoft YaHei}
+\setCJKsansfont[AutoFakeBold=2]{Microsoft YaHei}
+\setCJKmonofont{DengXian}
+\setCJKfamilyfont{zhkai}{KaiTi}
+
+\setlength{\parindent}{1.6em}
+\setlength{\parskip}{0.25em}
+\linespread{1.03}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.15em,topsep=0.2em,parsep=0em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.15em,topsep=0.2em,parsep=0em}
+\ctexset{
+  section={
+    format+=\Large\bfseries\color{accentblue},
+    name={},number={},
+    beforeskip=0.8em,afterskip=0.4em
+  }
+}
+\newcommand{\sectitle}[1]{\section*{#1}\vspace{-0.4em}\noindent\color{linegray}\rule{\linewidth}{0.6pt}\color{black}\vspace{0.2em}}
+\newcommand{\labelp}[1]{\noindent\textbf{#1}：}
+
+\begin{document}
+\thispagestyle{empty}
+
+{\LARGE\bfseries\color{accentblue} MultiSpec-GeoDiff：多模态谱图驱动的分子结构反演 Demo\par}
+\vspace{0.2em}
+{\normalsize\bfseries DP Technology / Deep Potential Internship Demo Proposal\par}
+\vspace{0.35em}
+{\small 一个可执行、可追踪的谱图到分子结构反演最小闭环：多模态谱图编码 $\rightarrow$ 候选召回/轻量生成 $\rightarrow$ 前向谱图一致性重排 $\rightarrow$ Top-K 分子输出。\par}
+\vspace{0.45em}
+\hrule height 0.7pt
+\vspace{0.3em}
+
+\sectitle{1. 项目提议}
+\labelp{具体目标}构建一个面向 IR/Raman 的多模态谱图结构反演 demo：输入实验谱图，输出 Top-K 候选分子、谱图一致性分数与结果可视化，并保留完整 trace log，形成可复查的最小闭环。\par
+\labelp{核心价值}相较直接谱图到 SMILES，本方案将分子视为图与几何对象，通过横坐标感知编码与前向谱图一致性重排，提高结构推断的可解释性、可验证性与后续 3D 几何扩展能力。\par
+\labelp{可行性简析}Demo 阶段先以公开小样本和候选库实现“编码--候选召回/轻量生成--一致性重排”原型，再逐步扩展到图扩散、distance geometry 与 TFN 模块；任务边界清晰、数据与工具可得、评测路径明确，适合短周期验证。\par
+
+\sectitle{2. Demo 要解决什么问题}
+谱图到分子结构本质上是一个受实验噪声、模态缺失与一谱多解影响的逆问题。对于未知化合物，仅依赖单一谱图或单一输出往往不足以支持稳定判断，因此系统更合理的目标应是生成可验证的候选集合，而非直接给出唯一答案。
+
+直接把谱图翻译为 SMILES 虽然形式简洁，但会弱化分子图拓扑、几何约束以及谱图的物理来源。对本项目而言，更合适的做法是：先从多模态谱图中提取结构证据，再召回或轻量生成候选分子，最后用前向谱图一致性进行重排。
+
+因此，本 demo 的输出是带分数的 Top-K 候选分子及其 trace log，而不是未经验证的单点预测；它强调可执行、可复查、可逐步扩展的 AI4S 工作流。
+
+\sectitle{3. 核心技术路径}
+当前 demo 先验证谱图证据到候选结构的可追踪闭环；完整版本再将候选召回替换为图扩散，并以 pairwise distance 作为 2D 到 3D 的几何桥梁。
+
+\begin{center}
+  \refstepcounter{figure}
+  \input{figures/submission_pipeline_placeholder.tex}\\[-0.25em]
+  {\small 图 \thefigure：Demo 核心流水线示意：多模态谱图经过坐标感知编码后，进入候选召回/轻量生成与前向一致性重排，最终输出 Top-K 候选与 trace log。}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{多模态谱图编码}：采用 CNN 提取局部峰特征，使用真实横坐标位置编码；模态内 attention 加入相对谱图距离 bias，跨模态 attention 不直接加入坐标 bias。
+  \item \textbf{候选召回/轻量生成}：Demo 阶段以候选库或轻量生成替代完整 diffusion，优先验证结构闭环而非追求大模型规模。
+  \item \textbf{前向一致性重排}：利用候选谱图预测或模板谱图，与输入谱图计算相似度，并结合分子式/质量与化学规则进行 Top-K 排序。
+  \item \textbf{Trace log}：记录输入、候选、分数、参数与输出结果，确保流程可复查、可对比、可复现。
+\end{itemize}
+
+\sectitle{4. 为什么值得做}
+\begin{itemize}
+  \item \textbf{Scientific value}：面向实验谱图解析与未知化合物识别，直接服务于结构反演这一高价值科学问题。
+  \item \textbf{Modeling value}：用图与几何视角替代纯序列翻译，更自然地容纳一谱多解、三维约束与后验验证。
+  \item \textbf{Engineering value}：形成一个可执行、可追踪的 AI for Science demo，适合作为后续代码实现与模型扩展的统一接口。
+\end{itemize}
+
+\sectitle{5. 可行性与验证}
+\begin{table}[t]
+\centering
+\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\linewidth}{>{\bfseries}p{0.14\linewidth}X X}
+\toprule
+维度 & Demo 实现 & 验证方式 \\
+\midrule
+数据 & 公开小样本谱图与候选库，优先支持 IR/Raman & 样例跑通、输入格式统一、缺失模态边界明确 \\
+候选召回 & 候选召回或轻量生成，配合 RDKit 基础过滤 & 候选覆盖率、公式/质量匹配、化学合法性 \\
+前向重排 & 模板谱图或轻量前向模型计算相似度并重排 & Top-K recall、spectrum similarity、reranking gain \\
+可视化 & 输出 Top-K 分子、谱图对比与结构化日志 & 结果面板可读、日志字段完整、可复查 \\
+风险控制 & 明确区分当前 demo 与未来模块，不夸大已实现能力 & 文档审查、失败案例记录、人工复核接口 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+主要指标包括：Top-K recall、spectrum similarity、formula/mass match、RDKit validity、reranking gain。
+
+\sectitle{6. 后续扩展路线}
+当前 submission 版本仅把完整路线图压缩为清晰 roadmap，不将其表述为既有成果：
+\begin{itemize}
+  \item \textbf{Phase I}：2D graph diffusion，用可增删节点的生成器替换当前候选检索/轻量生成模块；
+  \item \textbf{Phase II}：pairwise distance matrix 与 3D initialization；pairwise distance matrix 是 2D 图与 3D 几何之间的中间语言，比直接预测绝对坐标更符合旋转/平移不变性。
+  \item \textbf{Phase III}：parity-aware TFN-Transformer 与 chiral spectra，进一步处理张量特征、手性与更强前向物理一致性。
+\end{itemize}
+
+\begin{figure}[t]
+  \centering
+  \input{figures/submission_roadmap_placeholder.tex}
+  \caption{后续扩展路线图：从当前 demo 闭环逐步扩展到图扩散、三维初始化与 TFN 几何精修。}
+\end{figure}
+
+\vspace{0.4em}
+\noindent\footnotesize\textbf{参考依据}：多模态谱图结构解析数据集、TranSpec/SpecGNN 振动谱双向翻译、DetaNet 分子谱前向预测，以及 EGNN/等变几何建模相关工作。
+
+\vspace{0.5em}
+\hrule height 0.6pt
+\vspace{0.3em}
+\noindent\small\textbf{说明}：本 demo 的目标是证明核心思路与关键技术路径可落地，而非声称完整大模型已经训练完成。
+\end{document}

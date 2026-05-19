@@ -1,0 +1,8 @@
+\begin{tikzpicture}[x=1cm,y=1cm,>=latex]
+  \tikzstyle{phase}=[draw=accentblue, rounded corners=1pt, line width=0.5pt, fill=grayfill, minimum height=0.82cm, align=center, inner sep=2pt]
+  \node[phase, minimum width=3.4cm] (p1) at (0,0) {Phase I\\2D graph diffusion};
+  \node[phase, minimum width=3.9cm] (p2) at (4.6,0) {Phase II\\distance matrix + 3D init};
+  \node[phase, minimum width=4.0cm] (p3) at (9.6,0) {Phase III\\parity-aware TFN + chiral spectra};
+  \draw[->, line width=0.55pt, accentblue] (p1) -- (p2);
+  \draw[->, line width=0.55pt, accentblue] (p2) -- (p3);
+\end{tikzpicture}

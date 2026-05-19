@@ -1,0 +1,12 @@
+\begin{tikzpicture}[x=1cm,y=1cm,>=latex]
+  \tikzstyle{box}=[draw=accentblue, rounded corners=1pt, line width=0.5pt, fill=grayfill, minimum height=0.72cm, align=center, inner sep=2pt]
+  \node[box, minimum width=2.0cm] (a) at (0,0) {Multi-modal\\spectra};
+  \node[box, minimum width=2.7cm] (b) at (3.1,0) {Coordinate-aware\\spectral encoder};
+  \node[box, minimum width=2.5cm] (c) at (6.5,0) {Candidate\\generator / retrieval};
+  \node[box, minimum width=2.1cm] (d) at (9.5,0) {Forward\\spectrum scorer};
+  \node[box, minimum width=2.2cm] (e) at (12.3,0) {Top-K +\\trace log};
+  \draw[->, line width=0.55pt, accentblue] (a) -- (b);
+  \draw[->, line width=0.55pt, accentblue] (b) -- (c);
+  \draw[->, line width=0.55pt, accentblue] (c) -- (d);
+  \draw[->, line width=0.55pt, accentblue] (d) -- (e);
+\end{tikzpicture}
