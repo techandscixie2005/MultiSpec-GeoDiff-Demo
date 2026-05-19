@@ -1,15 +1,18 @@
 """Visualization utilities for the demo pipeline.
 
-RDKit is optional; if unavailable, molecule grid falls back to text panels.
+RDKit is optional; when Cairo backend is unavailable, molecules are rendered
+via SVG + cairosvg fallback.
 """
 
 from __future__ import annotations
 
+import io
 from pathlib import Path
 from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
+from PIL import Image as PILImage
 
 try:
     from rdkit import Chem
@@ -18,8 +21,46 @@ try:
 except Exception:
     RDKIT_AVAILABLE = False
 
+# cairosvg is used as a fallback when RDKit's Cairo backend is missing.
+try:
+    import cairosvg
+    _CAIROSVG_AVAILABLE = True
+except Exception:
+    _CAIROSVG_AVAILABLE = False
+
 import matplotlib
 matplotlib.use("Agg")
+
+
+def _rdkit_mol_to_image(mol, size: tuple[int, int] = (300, 200)):
+    """Render an RDKit Mol to a PIL Image.
+
+    Tries Cairo first; falls back to SVG + cairosvg; returns None on failure.
+    """
+    w, h = size
+    # Try Cairo backend first.
+    try:
+        from rdkit.Chem.Draw import MolDraw2DCairo
+        drawer = MolDraw2DCairo(w, h)
+        drawer.DrawMolecule(mol)
+        drawer.FinishDrawing()
+        return PILImage.open(io.BytesIO(drawer.GetDrawingText()))
+    except Exception:
+        pass
+
+    # Fallback: SVG via cairosvg.
+    if _CAIROSVG_AVAILABLE:
+        try:
+            drawer = Draw.MolDraw2DSVG(w, h)
+            drawer.DrawMolecule(mol)
+            drawer.FinishDrawing()
+            svg = drawer.GetDrawingText()
+            png_data = cairosvg.svg2png(bytestring=svg.encode("utf-8"))
+            return PILImage.open(io.BytesIO(png_data))
+        except Exception:
+            pass
+
+    return None
 
 
 def _ensure_parent(path: str | Path) -> Path:
@@ -121,15 +162,24 @@ def plot_molecule_grid(
     scores: list[float],
     output_path: str,
 ) -> str:
-    """Plot a grid of molecule structures/SMILES.
+    """Plot a grid of molecule structures.
 
-    Uses RDKit if available; otherwise falls back to text panels.
+    Uses RDKit Cairo when available; falls back to SVG+cairosvg;
+    text-only labels as last resort.
     """
     output_path = str(_ensure_parent(output_path))
     n = len(smiles_list)
-    cols = min(2, n)
-    rows = max(1, int(np.ceil(n / cols)))
-    fig, axes = plt.subplots(rows, cols, figsize=(12, max(4, rows * 3.5)))
+    # Use a clean 1-row layout for up to 5 molecules.
+    if n <= 5:
+        cols = n
+        rows = 1
+    else:
+        cols = 3
+        rows = max(1, int(np.ceil(n / cols)))
+
+    fig_width = min(14, cols * 3.5)
+    fig_height = rows * 3.2
+    fig, axes = plt.subplots(rows, cols, figsize=(fig_width, fig_height))
     axes = np.array(axes).reshape(-1)
 
     if RDKIT_AVAILABLE:
@@ -139,37 +189,33 @@ def plot_molecule_grid(
 
     for i, (ax_i, smiles, score, mol) in enumerate(zip(axes, smiles_list, scores, mols)):
         ax_i.axis("off")
-        ax_i.set_title(f"#{i + 1}  Score={score:.3f}", fontsize=11)
-        if RDKIT_AVAILABLE and mol is not None:
-            try:
-                img = Draw.MolToImage(mol, size=(250, 250))
-                ax_i.imshow(img)
-            except Exception:
-                ax_i.text(0.5, 0.5, smiles, ha="center", va="center",
-                          fontsize=9, family="monospace", transform=ax_i.transAxes)
-                ax_i.text(0.5, 0.1, "RDKit Cairo unavailable (text fallback)",
-                          ha="center", va="center", fontsize=7, color="#888",
-                          transform=ax_i.transAxes)
+        ax_i.set_title(f"#{i + 1}  Score={score:.4f}", fontsize=10, pad=4)
+
+        img = None
+        if mol is not None:
+            img = _rdkit_mol_to_image(mol, size=(300, 200))
+
+        if img is not None:
+            ax_i.imshow(img)
         else:
-            # Fallback: SMILES text panel
+            # Text-only fallback when RDKit or rendering is unavailable.
             ax_i.text(
-                0.5, 0.5, smiles,
+                0.5, 0.55, smiles,
                 ha="center", va="center",
                 fontsize=9, family="monospace",
                 transform=ax_i.transAxes,
             )
-            status = "RDKit available" if RDKIT_AVAILABLE else "RDKit unavailable (text fallback)"
             ax_i.text(
-                0.5, 0.1, status,
+                0.5, 0.15, "(structure rendering unavailable)",
                 ha="center", va="center",
-                fontsize=7, color="#888",
+                fontsize=7, color="#999",
                 transform=ax_i.transAxes,
             )
 
     for ax_i in axes[n:]:
         ax_i.axis("off")
 
-    fig.tight_layout()
-    fig.savefig(output_path, dpi=180)
+    fig.tight_layout(pad=1.5)
+    fig.savefig(output_path, dpi=150)
     plt.close(fig)
     return output_path
