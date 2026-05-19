@@ -31,6 +31,14 @@ jupyter notebook notebooks/demo_pipeline.ipynb
 - `python -m pytest -q`: **17 passed**
 - `jupyter nbconvert --to notebook --execute notebooks/demo_pipeline.ipynb --output demo_pipeline.executed.ipynb --output-dir /tmp`: **passed**
 
+## Reviewer-facing audit rerun
+- Re-ran `python scripts/run_demo.py --config configs/demo.yaml` on the audited repository state: **passed**
+- Re-ran `python scripts/validate_outputs.py --output_dir outputs`: **passed**
+- Re-ran `python -m pytest -q`: **17 passed**
+- Verified required reviewer-facing output files all exist and are non-empty.
+- Re-checked GitHub remote: `git@github.com:techandscixie2005/MultiSpec-GeoDiff-Demo.git`
+- Re-checked repository polish: required docs, config files, source tree, tests, sample data, and example outputs are present.
+
 ## Output files generated
 - `outputs/topk_candidates.csv`
 - `outputs/trace_log.json`
@@ -52,6 +60,10 @@ jupyter notebook notebooks/demo_pipeline.ipynb
 
 ## Implementation commit hash
 - `12b9ea64f12a09e61e403989b73eae423b20977c`
+
+## Audit note on commit hashes
+- The hash above is the **artifact-producing implementation commit** that generated the validated demo state.
+- Later audit-only commits may move branch `HEAD`; this report keeps the implementation hash stable so reviewers can distinguish the runnable demo commit from documentation-only follow-up commits.
 
 ## GitHub repository URL
 - https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo

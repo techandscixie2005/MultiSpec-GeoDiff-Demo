@@ -3,6 +3,28 @@
 MultiSpec-GeoDiff 是一个面向 **谱图驱动分子结构反演** 的可追踪 demo 文档包。当前仓库的**已实现 MVP** 只覆盖 IR/Raman 双模态闭环：谱图预处理 → 坐标感知编码 → 候选召回 → 前向谱图评分 → 重排 → 可视化与 trace log。  
 `graph diffusion`、`pairwise distance` 和 `TFN-Transformer` 只保留为 **roadmap-only** 接口，不应写成已训练完成的能力。
 
+## Reviewer quick start
+
+一条真正的运行命令：
+
+```bash
+python scripts/run_demo.py --config configs/demo.yaml
+```
+
+运行后会生成：
+
+- `outputs/topk_candidates.csv`
+- `outputs/trace_log.json`
+- `outputs/query_spectra.png`
+- `outputs/spectrum_match_top1.png`
+- `outputs/topk_spectrum_overlay.png`
+- `outputs/attention_heatmap_ir.png`
+- `outputs/attention_heatmap_raman.png`
+- `outputs/demo_summary_panel.png`
+
+当前**已实现**的是：IR/Raman 预处理、坐标感知编码、候选召回、前向评分、Top-K 重排、可视化和 trace log。  
+当前**仅属路线图**的是：graph diffusion、pairwise distance bridge、TFN-Transformer refinement。
+
 ## 当前状态
 
 | 层级 | 状态 | 说明 |
