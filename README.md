@@ -3,8 +3,10 @@
 > **Final DP Technology internship demo submission.**
 
 **Final submission entry:**
+- GitHub repo: [https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo](https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo)
 - Project proposal: [`01_project_proposal/proposal.md`](01_project_proposal/proposal.md)
-- Demo report: [`02_demo_document/demo_report.md`](02_demo_document/demo_report.md)
+- Demo explanation PDF: [`02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf`](02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf)
+- Demo explanation Markdown: [`02_demo_document/demo_report.md`](02_demo_document/demo_report.md)
 - Main command: `python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5`
 - Tests: `PYTHONPATH=03_code/src pytest 03_code/tests -q`
 
