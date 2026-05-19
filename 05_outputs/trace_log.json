@@ -1,0 +1,84 @@
+{
+  "demo_name": "MultiSpec-GeoDiff Stage-I Demo",
+  "timestamp": "2026-05-19T12:18:05Z",
+  "data_file": "04_data/IR_nist_200.jsonl",
+  "num_molecules": 200,
+  "query_id": 5,
+  "query_smiles": "C/C(=C/CCC1(C)C2CC3C(C2)C31C)COC(O)=Nc1ccccc1[N+](=O)[O-]",
+  "implemented_modules": [
+    "data_loader (JSONL)",
+    "spectra_preprocess (interpolation + normalization + peak extraction)",
+    "spectra_encoder (coordinate-aware encoding + Fourier features)",
+    "spectral_attention (distance-bias self-attention)",
+    "candidate_generator (cosine similarity retrieval)",
+    "reranker (forward-spectrum similarity reranking)",
+    "visualization (overlay, heatmap, molecule grid)",
+    "metrics (cosine, L1, peak match, top-k hit)"
+  ],
+  "future_modules": [
+    "distance_head (Stage-II: 2D graph -> pairwise distance matrix)",
+    "graph_diffusion (Stage-II: size-adaptive candidate generation)",
+    "tfn_transformer (Stage-III: SE(3)-equivariant refinement)"
+  ],
+  "parameters": {
+    "top_k": 3,
+    "top_m": 20
+  },
+  "results": {
+    "ground_truth_in_top_k": false,
+    "top_candidates": [
+      {
+        "rank": 1,
+        "smiles": "COC(=O)C(Cl)(CCl)CCl",
+        "retrieval_score": 1.0,
+        "cosine_similarity": 0.9747,
+        "l1_similarity": 0.8003,
+        "peak_match": 0.8326,
+        "forward_score": 0.8797,
+        "final_score": 0.9158,
+        "is_ground_truth": false
+      },
+      {
+        "rank": 2,
+        "smiles": "COc1ccc(N2CCN(C)c3ccccc3C2)cc1",
+        "retrieval_score": 1.0,
+        "cosine_similarity": 0.9782,
+        "l1_similarity": 0.8042,
+        "peak_match": 0.7992,
+        "forward_score": 0.8723,
+        "final_score": 0.9106,
+        "is_ground_truth": false
+      },
+      {
+        "rank": 3,
+        "smiles": "COC(O)=NC(C)(C)c1ccccc1",
+        "retrieval_score": 1.0,
+        "cosine_similarity": 0.9816,
+        "l1_similarity": 0.8254,
+        "peak_match": 0.7546,
+        "forward_score": 0.8667,
+        "final_score": 0.9067,
+        "is_ground_truth": false
+      }
+    ]
+  },
+  "outputs": {
+    "topk_candidates_csv": "05_outputs/topk_candidates.csv",
+    "spectrum_overlay": "05_outputs/spectrum_overlay.png",
+    "attention_heatmap": "05_outputs/attention_heatmap.png",
+    "molecule_grid": "05_outputs/molecule_grid.png",
+    "ablation_results": "05_outputs/ablation_results.csv",
+    "trace_log": "05_outputs/trace_log.json"
+  },
+  "environment": {
+    "python_version": "3.10.18",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "packages": {
+      "numpy": "2.2.5",
+      "scipy": "1.15.3",
+      "matplotlib": "3.10.6",
+      "rdkit": "2025.03.6",
+      "torch": "2.8.0+cu126"
+    }
+  }
+}

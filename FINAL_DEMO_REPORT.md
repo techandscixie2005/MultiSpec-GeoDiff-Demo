@@ -1,78 +1,83 @@
-# FINAL DEMO REPORT
+# FINAL DEMO REPORT — MultiSpec-GeoDiff Stage-I
 
 ## What was implemented
-- A runnable **MultiSpec-GeoDiff** MVP for **IR/Raman → Top-K molecular candidate ranking**.
-- Built-in toy/sample data generation with a 12-molecule candidate library and synthetic Gaussian-template spectra.
-- Spectral preprocessing: CSV validation, resampling to a common grid, smoothing, normalization, and peak extraction.
-- A deterministic **coordinate-aware spectral encoder** with local convolution-style features, intra-modal attention with relative spectral-distance bias, and cross-modal feature fusion without coordinate bias.
-- Candidate retrieval with multimodal similarity, embedding similarity, and optional mass-aware soft filtering.
-- Closed-loop reranking with IR similarity, Raman similarity, peak matching, mass/formula scoring, and chemical-validity fallback scoring.
-- Reviewer-facing outputs: Top-K CSV, query/candidate spectrum figures, attention heatmaps, candidate grid, summary panel, and structured trace log.
-- Future-facing importable stubs for graph diffusion, pairwise distance prediction, and parity-aware TFN-Transformer refinement.
-- CLI scripts, executable notebook, validation script, docs, and pytest coverage.
+
+A runnable **MultiSpec-GeoDiff Stage-I** demo for **experimental NIST IR spectrum → Top-K molecular candidate ranking**.
+
+- Loading and validation of 200 experimental NIST IR spectra from JSONL
+- Spectrum interpolation to a common grid (400–4000 cm⁻¹, 1800 points) and min-max normalization
+- Coordinate-aware spectral encoding with Fourier wavenumber features
+- Spectral-distance-bias attention with RBF kernel over delta-nu
+- Cosine similarity candidate retrieval from a 199-molecule library
+- Forward-spectrum reranking using cosine similarity, L1 distance, and peak matching
+- Generated outputs: Top-K CSV, spectrum overlay, attention heatmap, molecule grid, ablation CSV, trace log
+- Future-facing stubs for graph diffusion, pairwise distance prediction, and TFN-Transformer refinement
+- pytest suite (22 tests), CLI entry point, Jupyter notebook, and GitHub Actions CI
 
 ## How to run the demo
-```bash
-python -m pip install -r requirements.txt
-python scripts/run_demo.py --config configs/demo.yaml
-python scripts/validate_outputs.py --output_dir outputs
-```
 
-Notebook:
 ```bash
-jupyter notebook notebooks/demo_pipeline.ipynb
+pip install -r 03_code/requirements.txt
+python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5
+PYTHONPATH=03_code/src pytest 03_code/tests -q
 ```
 
 ## Test results
-- `omx doctor`: **10 passed, 1 warning, 0 failed**
-  - Warning: Explore Harness packaged sources found, but no compatible packaged prebuilt or cargo was available.
-- `python scripts/run_demo.py --config configs/demo.yaml`: **passed**
-- `python scripts/validate_outputs.py --output_dir outputs`: **passed**
-- `python -m pytest -q`: **17 passed**
-- `jupyter nbconvert --to notebook --execute notebooks/demo_pipeline.ipynb --output demo_pipeline.executed.ipynb --output-dir /tmp`: **passed**
 
-## Reviewer-facing audit rerun
-- Re-ran `python scripts/run_demo.py --config configs/demo.yaml` on the audited repository state: **passed**
-- Re-ran `python scripts/validate_outputs.py --output_dir outputs`: **passed**
-- Re-ran `python -m pytest -q`: **17 passed**
-- Verified required reviewer-facing output files all exist and are non-empty.
-- Re-checked GitHub remote: `git@github.com:techandscixie2005/MultiSpec-GeoDiff-Demo.git`
-- Re-checked repository polish: required docs, config files, source tree, tests, sample data, and example outputs are present.
+- `python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5`: **passed**
+- `PYTHONPATH=03_code/src pytest 03_code/tests -q`: **22 passed**
 
 ## Output files generated
-- `outputs/topk_candidates.csv`
-- `outputs/trace_log.json`
-- `outputs/query_spectra.png`
-- `outputs/spectrum_match_top1.png`
-- `outputs/topk_spectrum_overlay.png`
-- `outputs/molecule_grid.png`
-- `outputs/topk_candidates.png`
-- `outputs/attention_heatmap_ir.png`
-- `outputs/attention_heatmap_raman.png`
-- `outputs/demo_summary_panel.png`
-- `outputs/demo_summary.md`
+
+| Output | Path |
+|---|---|
+| Top-K candidates | `05_outputs/topk_candidates.csv` |
+| Spectrum overlay | `05_outputs/spectrum_overlay.png` |
+| Attention heatmap | `05_outputs/attention_heatmap.png` |
+| Molecule grid | `05_outputs/molecule_grid.png` |
+| Ablation results | `05_outputs/ablation_results.csv` |
+| Trace log | `05_outputs/trace_log.json` |
+
+## Key technical features
+
+1. **Coordinate-aware spectral encoding**: Each spectral point is embedded as `h_i = W_I * I_i + p(nu_i)` where `p(nu)` is a Fourier encoding of the wavenumber coordinate. This respects the physical meaning of the IR x-axis.
+
+2. **Spectral distance bias attention**: Self-attention with an RBF distance bias `b(|nu_i - nu_j|) = exp(-(Delta-nu / sigma)^2)` that encodes the intuition that nearby wavenumbers interact more strongly.
+
+3. **Forward-spectrum reranking**: Retrieved candidates are reranked by multi-metric spectral consistency (cosine + L1 + peak match) against the query spectrum.
+
+## Stage-II and Stage-III roadmap
+
+| Stage | Module | Status |
+|---|---|---|
+| **Stage I** | Spectral encoding, retrieval, reranking | ✅ Implemented |
+| **Stage II** | Graph diffusion + pairwise distance prediction | 🔜 Stub |
+| **Stage III** | TFN-Transformer (0e, 0o, 1e, 1o, 2e, 2o) | 🔜 Stub |
 
 ## Limitations
-- The bundled spectra are **toy/sample synthetic spectra**, not production-grade experimental data.
-- The demo outputs **Top-K candidates**, not a guaranteed unique structure solution.
-- `graph diffusion`, `pairwise distance`, and `TFN-Transformer` are **roadmap-only stubs**, not trained modules.
-- The current environment uses fallback behavior because RDKit and Torch are not installed.
+
+- 200-molecule library is small; retrieval accuracy is not benchmark-level
+- The encoder uses deterministic random projections, not learned parameters
+- Only IR modality is used
+- No graph diffusion (retrieval is the Stage-I substitute)
+- No 3D refinement (TFN-Transformer is an interface stub only)
+- Not a production-grade unknown-molecule identification system
 
 ## Implementation commit hash
-- `12b9ea64f12a09e61e403989b73eae423b20977c`
 
-## Audit note on commit hashes
-- The hash above is the **artifact-producing implementation commit** that generated the validated demo state.
-- Later audit-only commits may move branch `HEAD`; this report keeps the implementation hash stable so reviewers can distinguish the runnable demo commit from documentation-only follow-up commits.
+See `git log` for the current commit on branch `demo-stage1-ir-nist`.
 
-## GitHub repository URL
-- https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo
+## GitHub repository
+
+https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo
 
 ## RDKit / Torch usage
-- RDKit: **not installed** → fallback text-only molecule panel + fallback validity score (`no_rdkit`)
-- Torch: **not installed** → deterministic NumPy encoder (`numpy_encoder`)
+
+- RDKit: **available** (2025.03.6) — molecule grid uses RDKit rendering with Cairo fallback
+- Torch: **available** (2.8.0) — PyTorch available but demo uses deterministic NumPy encoder for reproducibility
 
 ## Unresolved issues
-- RDKit-enabled structure drawing path is unverified in this environment.
-- Torch-backed encoder path is unverified in this environment.
-- No claims are made about real experimental spectra performance or trained generative geometry modules.
+
+- Ground truth is not guaranteed in Top-K (honest reporting)
+- No claims are made about benchmark-level retrieval performance
+- Graph diffusion and TFN-Transformer remain unimplemented beyond stubs

@@ -261,10 +261,16 @@ def _build_trace_log(args, query_record, result_df, hit: bool, output_dir: Path)
         "ablation_results": str(output_dir / "ablation_results.csv"),
         "trace_log": str(output_dir / "trace_log.json"),
     }
+    # Store data_file relative to the output directory for reproducibility
+    data_path = Path(args.data)
+    try:
+        rel_data = str(data_path.relative_to(Path.cwd()))
+    except ValueError:
+        rel_data = str(args.data)
     return {
         "demo_name": "MultiSpec-GeoDiff Stage-I Demo",
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "data_file": str(args.data),
+        "data_file": rel_data,
         "num_molecules": 200,
         "query_id": args.query_id,
         "query_smiles": query_record["smiles"],

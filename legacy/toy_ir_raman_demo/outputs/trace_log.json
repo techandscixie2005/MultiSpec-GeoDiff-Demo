@@ -1,0 +1,201 @@
+{
+  "timestamp": "2026-05-19T09:49:03.117555Z",
+  "git_commit_hash": "bb4e1ffb402cb27cfce38329b75e100f9c3f4a97",
+  "input_files": {
+    "query_ir": "/home/xiangyu_xie/DeepTech/data/samples/query_ir.csv",
+    "query_raman": "/home/xiangyu_xie/DeepTech/data/samples/query_raman.csv",
+    "candidate_library": "/home/xiangyu_xie/DeepTech/data/samples/candidate_library.csv"
+  },
+  "config_file": "/home/xiangyu_xie/DeepTech/configs/demo.yaml",
+  "preprocessing_parameters": {
+    "normalize": "max",
+    "smoothing_window": 11,
+    "smoothing_polyorder": 2,
+    "peak_threshold": 0.34,
+    "grid_size": 901
+  },
+  "modalities_used": [
+    "ir",
+    "raman"
+  ],
+  "candidate_library_size": 12,
+  "filtering_steps": [
+    "mass_filter_penalty_only:mol_01",
+    "mass_filter_penalty_only:mol_05",
+    "mass_filter_penalty_only:mol_06",
+    "mass_filter_penalty_only:mol_07",
+    "mass_filter_penalty_only:mol_08",
+    "mass_filter_penalty_only:mol_09",
+    "mass_filter_penalty_only:mol_10",
+    "mass_filter_penalty_only:mol_11",
+    "mass_filter_penalty_only:mol_12"
+  ],
+  "scoring_weights": {
+    "ir_similarity": 0.34,
+    "raman_similarity": 0.24,
+    "peak_score": 0.2,
+    "mass_score": 0.12,
+    "validity": 0.1
+  },
+  "topk_candidates": [
+    {
+      "rank": 1,
+      "molecule_id": "mol_03",
+      "name": "phenol",
+      "smiles": "c1ccc(cc1)O",
+      "formula": "C6H6O",
+      "final_score": 0.9704489304682034,
+      "ir_similarity": 0.9976214245331854,
+      "raman_similarity": 0.9753940166001454,
+      "peak_score": 0.9758154107144272,
+      "mass_score": 0.85,
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.989 | embed=0.997"
+    },
+    {
+      "rank": 2,
+      "molecule_id": "mol_04",
+      "name": "aniline",
+      "smiles": "Nc1ccccc1",
+      "formula": "C6H7N",
+      "final_score": 0.8224029572117867,
+      "ir_similarity": 0.8208642126815934,
+      "raman_similarity": 0.9704030289511798,
+      "peak_score": 0.6018867423797735,
+      "mass_score": 0.7502920789650592,
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.909 | embed=0.994"
+    },
+    {
+      "rank": 3,
+      "molecule_id": "mol_12",
+      "name": "methyl benzoate",
+      "smiles": "COC(=O)c1ccccc1",
+      "formula": "C8H8O2",
+      "final_score": 0.5733200309040617,
+      "ir_similarity": 0.37701904135462266,
+      "raman_similarity": 0.8841583093683254,
+      "peak_score": 0.5746778129754595,
+      "mass_score": 0.15,
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.680 | embed=0.979"
+    },
+    {
+      "rank": 4,
+      "molecule_id": "mol_01",
+      "name": "benzene",
+      "smiles": "c1ccccc1",
+      "formula": "C6H6",
+      "final_score": 0.5474121162692084,
+      "ir_similarity": 0.4390166889851702,
+      "raman_similarity": 0.8531685613656893,
+      "peak_score": 0.37692993643242545,
+      "mass_score": 0.15,
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.699 | embed=0.993"
+    },
+    {
+      "rank": 5,
+      "molecule_id": "mol_02",
+      "name": "toluene",
+      "smiles": "Cc1ccccc1",
+      "formula": "C7H8",
+      "final_score": 0.540094786173945,
+      "ir_similarity": 0.37342814690027437,
+      "raman_similarity": 0.7457890826212878,
+      "peak_score": 0.3549757017760904,
+      "mass_score": 0.5262058003627054,
+      "validity": 1.0,
+      "notes": "RDKit sanitized candidate. | retrieval=0.631 | embed=0.991"
+    }
+  ],
+  "generated_output_files": [
+    "/home/xiangyu_xie/DeepTech/outputs/topk_candidates.csv",
+    "/home/xiangyu_xie/DeepTech/outputs/query_spectra.png",
+    "/home/xiangyu_xie/DeepTech/outputs/attention_heatmap_ir.png",
+    "/home/xiangyu_xie/DeepTech/outputs/attention_heatmap_raman.png",
+    "/home/xiangyu_xie/DeepTech/outputs/spectrum_match_top1.png",
+    "/home/xiangyu_xie/DeepTech/outputs/topk_spectrum_overlay.png",
+    "/home/xiangyu_xie/DeepTech/outputs/molecule_grid.png",
+    "/home/xiangyu_xie/DeepTech/outputs/topk_candidates.png",
+    "/home/xiangyu_xie/DeepTech/outputs/demo_summary_panel.png",
+    "/home/xiangyu_xie/DeepTech/outputs/trace_log.json"
+  ],
+  "environment": {
+    "python": {
+      "version": "3.10.18",
+      "executable": "/home/xiangyu_xie/anaconda3/envs/graduation_project/bin/python",
+      "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+    },
+    "packages": {
+      "numpy": "2.2.5",
+      "pandas": "2.3.2",
+      "scipy": "1.15.3",
+      "sklearn": "1.7.1",
+      "matplotlib": "3.10.6",
+      "yaml": "6.0.2",
+      "rdkit": "2025.03.6",
+      "torch": "2.8.0+cu126"
+    }
+  },
+  "warnings": [],
+  "fallback_modes": [],
+  "config_snapshot": {
+    "project_name": "MultiSpec-GeoDiff-Demo",
+    "seed": 7,
+    "input": {
+      "query_ir": "data/samples/query_ir.csv",
+      "query_raman": "data/samples/query_raman.csv",
+      "candidate_library": "data/samples/candidate_library.csv",
+      "query_metadata": {
+        "approximate_mass": 94.11,
+        "formula": null,
+        "target_hint": "phenol"
+      }
+    },
+    "preprocess": {
+      "wavenumber_min": 400.0,
+      "wavenumber_max": 4000.0,
+      "wavenumber_step": 4.0,
+      "normalize": "max",
+      "smoothing_window": 11,
+      "smoothing_polyorder": 2,
+      "peak_threshold": 0.34,
+      "allow_missing_modalities": true
+    },
+    "encoder": {
+      "hidden_dim": 16,
+      "num_rbf": 8,
+      "bias_sigma": 180.0,
+      "attention_scale": 0.75,
+      "conv_kernel_sizes": [
+        3,
+        5,
+        9
+      ]
+    },
+    "retrieval": {
+      "top_m": 8,
+      "similarity_weights": {
+        "ir": 0.55,
+        "raman": 0.45
+      },
+      "embedding_weight": 0.2,
+      "mass_tolerance": 2.5
+    },
+    "rerank": {
+      "top_k": 5,
+      "weights": {
+        "ir_similarity": 0.34,
+        "raman_similarity": 0.24,
+        "peak_score": 0.2,
+        "mass_score": 0.12,
+        "validity": 0.1
+      }
+    },
+    "outputs": {
+      "output_dir": "outputs",
+      "write_demo_summary_md": true
+    }
+  }
+}
