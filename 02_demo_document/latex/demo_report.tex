@@ -37,8 +37,8 @@
   before skip=4pt, after skip=10pt
 }
 \newtcolorbox{scopebox}{
-  colback=red!3!white, colframe=red!40!black, arc=3mm, boxrule=0.6pt,
-  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  colback=blue!4!white, colframe=midblue, arc=3mm, boxrule=0.8pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
   before skip=4pt, after skip=10pt
 }
 
@@ -146,7 +146,9 @@ NIST IR 数据加载 & 已实现 & \texttt{04\_data/IR\_nist\_200.jsonl} \\
 Top-K 输出与可视化 & 已实现 & CSV, PNG 输出文件 \\
 可追溯 Demo 日志 & 已实现 & \texttt{trace\_log.json} \\
 本地测试与 CI & 已实现 & 22 测试, GitHub Actions \\
+\rowcolor{blue!3!white}
 Pairwise 距离预测头 & 接口原型 & \texttt{distance\_head.py} \\
+\rowcolor{blue!3!white}
 TFN/SE(3) 等变模块 & 接口原型 & \texttt{tfn\_transformer\_stub.py} \\
 \bottomrule
 \end{tabular}
@@ -162,8 +164,8 @@ TFN/SE(3) 等变模块 & 接口原型 & \texttt{tfn\_transformer\_stub.py} \\
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\textwidth]{figures/fig1_workflow.pdf}
-\caption{Stage-I Demo 工作流。蓝色模块为已实现的 Stage-I 管线；虚线框为未来接口模块。}
+\includegraphics[width=0.98\linewidth]{figures/stage1_workflow.png}
+\caption{Stage-I Demo 工作流。实心蓝色模块为已实现的 Stage-I 检索/重排闭环（200 条 NIST 实验 IR 光谱）；虚线模块为图扩散、pairwise 距离预测及 TFN/SE(3) 等变细化的未来接口，非本 Demo 已完成功能。}
 \label{fig:workflow}
 \end{figure}
 
@@ -213,6 +215,8 @@ h_i = W_I \cdot I_i + p(\nu_i)
 
 IR 光谱的每个数据点不是无结构的序列 token——它同时携带强度信息 $I_i$ 与波数物理坐标 $\nu_i$。嵌入层将强度投影与傅里叶波数位置编码相加，使模型天然地感知每个点位于光谱的哪个位置。这是本 Demo 区别于普通 Transformer 序列编码的核心设计。
 
+{\small\color{midblue}\textbf{核心思路：} IR 波数轴被视作物理坐标，而非无结构序列索引。}
+
 \subsection{谱图距离偏置注意力}
 
 \begin{equation}\label{eq:attn}
@@ -221,6 +225,8 @@ A_{ij} = \operatorname{softmax}_j\left(\frac{Q_i K_j^T}{\sqrt{d}} + b(|\nu_i - \
 
 在 IR 光谱中，物理上邻近的波数区域具有更强的本征相关性——这一先验不应由模型从有限数据中从头学习。本设计在注意力中注入波数间距依赖的 RBF 偏置 $b(\Delta\nu) = \exp(-(\Delta\nu/\sigma)^2)$，使远离谱区之间的注意力权重被物理先验抑制。这与 Graph Transformer 中注入拓扑距离偏置的思路一致，但应用对象是\textbf{光谱物理坐标}。
 
+{\small\color{midblue}\textbf{核心思路：} 注意力被物理谱距偏置，而非仅依赖 token 相似度。}
+
 \subsection{候选检索与前向谱图重排}
 
 \begin{equation}\label{eq:score}
@@ -228,6 +234,8 @@ A_{ij} = \operatorname{softmax}_j\left(\frac{Q_i K_j^T}{\sqrt{d}} + b(|\nu_i - \
 \end{equation}
 
 当前 Demo 使用检索而非训练完成的图扩散模型来产生候选——这是 Stage-I 的刻意简化。检索后，候选分子经前向谱图对比进行三指标重排（余弦相似度 + L1 距离 + 峰匹配），验证``候选提出 + 前向一致性校验''的闭环在真实实验数据上的可行性。在后续阶段，检索模块可替换为谱图条件图扩散生成。
+
+{\small\color{midblue}\textbf{核心思路：} 候选分子通过前向谱图一致性进行重排，而非仅依赖嵌入相似度。}
 
 % ======================================================================
 % SECTION 5: SCOPE BOUNDARY
@@ -239,8 +247,12 @@ A_{ij} = \operatorname{softmax}_j\left(\frac{Q_i K_j^T}{\sqrt{d}} + b(|\nu_i - \
 \textbf{当前 Demo 已实现：}
 \begin{itemize}
   \item Stage-I IR 检索与重排可行性闭环（200 条 NIST 实验 IR 光谱）
-  \item 坐标感知谱图编码、谱图距离偏置注意力、可视化输出
-  \item 可追溯执行日志、22 个本地测试、GitHub Actions CI
+  \item 坐标感知谱图编码（将波数轴视为物理坐标）
+  \item 谱图距离偏置注意力（基于物理谱距而非 token 相似度）
+  \item 候选分子检索与前向谱图重排
+  \item 可视化输出（谱图叠加、分子网格、注意力热图）
+  \item 可追溯执行日志（\texttt{trace\_log.json}）
+  \item 本地测试与 GitHub Actions CI（22 个测试全部通过）
 \end{itemize}
 
 \vspace{4pt}
@@ -249,8 +261,8 @@ A_{ij} = \operatorname{softmax}_j\left(\frac{Q_i K_j^T}{\sqrt{d}} + b(|\nu_i - \
   \item 未训练完整的图扩散生成模型
   \item 未训练完整的 pairwise 距离预测器
   \item 未训练完整的宇称分辨 TFN/SE(3)-Transformer
-  \item 未接入 IR/Raman/NMR/MS/UV 等多模态谱图
-  \item 未建立生产级未知物鉴定基准
+  \item 未接入 IR/Raman/NMR/MS/UV 等多模态谱图系统
+  \item 未建立生产级未知物鉴定系统
 \end{itemize}
 \end{scopebox}
 
@@ -298,10 +310,12 @@ CI &
 % ======================================================================
 \section{后续演进路线}
 
+本 Demo 聚焦于 Stage-I 可行性验证；Stage-II 与 Stage-III 为计划中的未来扩展方向，当前代码库中保留接口定义但未包含完整训练的生成模型。
+
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\textwidth]{figures/fig3_roadmap.pdf}
-\caption{三阶段演进路线。Stage-I（已完成为绿色）覆盖检索/重排闭环；Stage-II（计划中为琥珀色）引入图扩散与 pairwise 距离预测；Stage-III（未来为灰色）实现 SE(3) 等变细化与多模态扩展。}
+\includegraphics[width=0.98\linewidth]{figures/roadmap.png}
+\caption{开发路线图与能力边界。Stage-I 为本提交已完成内容；Stage-II 与 Stage-III 为计划中的未来扩展。当前 Demo 验证的是可行性闭环思想，而非完整训练的分子生成模型。}
 \label{fig:roadmap}
 \end{figure}
 
