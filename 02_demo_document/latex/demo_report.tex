@@ -96,7 +96,7 @@
   \textbf{仓库地址} &
     \url{https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo} \\[3pt]
   \textbf{一键运行} &
-    \texttt{python 03\_code/run\_demo.py --query\_id 0 --data 04\_data/IR\_nist\_200.jsonl --top\_k 5} \\[3pt]
+    \texttt{git clone https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo.git \&\& cd MultiSpec-GeoDiff-Demo \&\& pip install -r 03\_code/requirements.txt \&\& python 03\_code/run\_demo.py --query\_id 0 --data 04\_data/IR\_nist\_200.jsonl --top\_k 5} \\[3pt]
   \textbf{测试命令} &
     \texttt{PYTHONPATH=03\_code/src pytest 03\_code/tests -q} \\[3pt]
   \textbf{验证状态} &
@@ -261,7 +261,7 @@ A_{ij} = \operatorname{softmax}_j\left(\frac{Q_i K_j^T}{\sqrt{d}} + b(|\nu_i - \
   \item 未训练完整的图扩散生成模型
   \item 未训练完整的 pairwise 距离预测器
   \item 未训练完整的宇称分辨 TFN/SE(3)-Transformer
-  \item 未接入 IR/Raman/NMR/MS/UV 等多模态谱图系统
+  \item 未接入 Raman、NMR、MS、UV 等额外模态（当前仅 IR 单模态）
   \item 未建立生产级未知物鉴定系统
 \end{itemize}
 \end{scopebox}
@@ -334,6 +334,8 @@ GitHub 仓库 &
   \url{https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo} \\
 项目提议 &
   \texttt{01\_project\_proposal/proposal.md} \\
+Feishu 风格 Demo 说明 &
+  \texttt{02\_demo\_document/DEMO说明.md} \\
 Demo 说明 PDF &
   \texttt{02\_demo\_document/demo\_report.pdf}（本文档）\\
 LaTeX 源码 &
@@ -355,7 +357,7 @@ CI &
 \vspace{6pt}
 \begin{center}
 {\small\color{greytext}
-\textbf{主命令：} \texttt{python 03\_code/run\_demo.py --query\_id 0 --data 04\_data/IR\_nist\_200.jsonl --top\_k 5} \\
+\textbf{主命令：} \texttt{git clone https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo.git \&\& cd MultiSpec-GeoDiff-Demo \&\& pip install -r 03\_code/requirements.txt \&\& python 03\_code/run\_demo.py --query\_id 0 --data 04\_data/IR\_nist\_200.jsonl --top\_k 5} \\
 \textbf{测试命令：} \texttt{PYTHONPATH=03\_code/src pytest 03\_code/tests -q} \\
 仓库地址：\url{https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo}
 }

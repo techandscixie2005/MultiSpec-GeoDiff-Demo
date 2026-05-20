@@ -94,10 +94,11 @@ PYTHONPATH=03_code/src pytest 03_code/tests -q
 **建议 reviewer 优先查看：**
 
 1. `README.md` — 仓库总览
-2. `02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf` — 本文档
-3. `05_outputs/spectrum_overlay.png` — 谱图对比
-4. `05_outputs/topk_candidates.csv` — 候选排序结果
-5. `05_outputs/trace_log.json` — 执行记录
+2. `02_demo_document/DEMO说明.md` — Feishu 风格 Demo 说明
+3. `02_demo_document/demo_report.pdf` — 本文档 PDF
+4. `05_outputs/spectrum_overlay.png` — 谱图对比
+5. `05_outputs/topk_candidates.csv` — 候选排序结果
+6. `05_outputs/trace_log.json` — 执行记录
 
 ---
 
@@ -152,7 +153,7 @@ $$\operatorname{Score}(G_k) = \lambda_1 \operatorname{CosSim}(S_q, S_k) + \lambd
 | 图扩散生成器 | 未训练实现 | 当前用检索替代 de-novo 候选生成 |
 | Pairwise 距离预测器 | 接口桩 | `03_code/src/distance_head.py` |
 | TFN-Transformer | 接口桩 | `03_code/src/tfn_transformer_stub.py` |
-| 多模态谱图系统 | 未完整接入 | 当前仅 IR，Raman/NMR/MS/UV 等未接入 |
+| 多模态扩展 | 未完整接入 | 当前仅 IR，Raman/NMR/MS/UV 为 roadmap |
 | 未知物鉴定基准 | 未完成 | 200 条数据仅支撑 Demo 级验证 |
 
 **这一边界是刻意的。** Demo 的目标是展示核心思路与可行性闭环，而非交付完整的生产系统。Stage-II 和 Stage-III 的关键模块已作为可导入接口桩存在于代码库中，定义了清晰的接口签名与数据结构，为后续开发提供了集成点。
@@ -218,7 +219,8 @@ $$\operatorname{Score}(G_k) = \lambda_1 \operatorname{CosSim}(S_q, S_k) + \lambd
 |---|---|
 | **GitHub 仓库** | [https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo](https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo) |
 | 项目提议 | `01_project_proposal/proposal.md` |
-| Demo 说明 PDF | `02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf` |
+| Feishu 风格 Demo 说明 | `02_demo_document/DEMO说明.md` |
+| Demo 说明 PDF | `02_demo_document/demo_report.pdf` |
 | Demo 说明 Markdown | `02_demo_document/demo_report.md` |
 | 代码 | `03_code/` (核心模块 + 测试 + CLI 入口) |
 | 数据 | `04_data/IR_nist_200.jsonl` (200 条 NIST IR 光谱) |

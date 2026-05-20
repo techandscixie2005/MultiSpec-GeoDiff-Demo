@@ -5,10 +5,13 @@
 **Final submission entry:**
 - GitHub repo: [https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo](https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo)
 - Project proposal: [`01_project_proposal/proposal.md`](01_project_proposal/proposal.md)
+- Feishu-style demo explanation: [`02_demo_document/DEMO说明.md`](02_demo_document/DEMO说明.md)
 - Demo explanation PDF: [`02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf`](02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf)
 - Demo explanation Markdown: [`02_demo_document/demo_report.md`](02_demo_document/demo_report.md)
 - Main command: `python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5`
 - Tests: `PYTHONPATH=03_code/src pytest 03_code/tests -q`
+
+> **Stage scope:** Stage-I (IR retrieval and reranking) is implemented. Stage-II (graph diffusion, pairwise distance) and Stage-III (TFN-Transformer, chirality-aware tensor channels) are roadmap-only interfaces.
 
 ---
 
@@ -21,25 +24,22 @@ spectral-distance-bias attention, and forward-spectrum reranking.
 
 ## Honest scope
 
-| Implemented | Not implemented |
+| Implemented (Stage-I) | Roadmap-only (Stage-II/III) |
 |---|---|
-| NIST IR JSONL loading | Trained graph diffusion |
-| Spectrum interpolation/normalization | Trained pairwise distance model |
-| Coordinate-aware spectral encoding | Trained TFN-Transformer |
-| Spectral-distance-bias attention | Full multimodal system |
-| Retrieval + reranking | Production unknown-molecule identification |
-| Top-K outputs + trace log | |
+| NIST IR JSONL loading | Graph diffusion (size-adaptive) |
+| Spectrum interpolation/normalization | Pairwise distance model (2D→3D bridge) |
+| Coordinate-aware spectral encoding | TFN-Transformer (SE(3)-equivariant) |
+| Spectral distance-bias attention | Chirality-aware tensor channels (0e/0o/1e/1o/2e/2o) |
+| Retrieval + forward-spectrum reranking | Full multimodal system (Raman, NMR, MS, UV) |
+| Top-K outputs + trace log + CI | Production unknown-molecule identification |
 
 ## Quick Start
 
 ```bash
-# Install dependencies
+git clone https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo.git
+cd MultiSpec-GeoDiff-Demo
 pip install -r 03_code/requirements.txt
-
-# Run the Stage-I demo
 python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5
-
-# Run tests
 PYTHONPATH=03_code/src pytest 03_code/tests -q
 ```
 
@@ -78,8 +78,10 @@ query IR spectrum
 ├── 01_project_proposal/
 │   └── proposal.md              # Research proposal
 ├── 02_demo_document/
+│   ├── DEMO说明.md               # Feishu-style demo explanation
 │   ├── demo_report.md           # Technical demo report
-│   └── demo_report.pdf          # Generated PDF
+│   ├── demo_report.pdf          # Generated PDF (LaTeX)
+│   └── MultiSpec-GeoDiff_Demo_说明.pdf  # Reviewer-facing PDF
 ├── 03_code/
 │   ├── run_demo.py              # CLI entry point
 │   ├── requirements.txt
