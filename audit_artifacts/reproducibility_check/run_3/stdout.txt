@@ -1,0 +1,46 @@
+============================================================
+MultiSpec-GeoDiff Stage-I Demo
+============================================================
+
+[1/8] Loading data from 04_data/IR_nist_200.jsonl ...
+  Loaded 200 records, 200 valid
+
+[2/8] Splitting: query_id=5 ...
+  Query SMILES: C/C(=C/CCC1(C)C2CC3C(C2)C31C)COC(O)=Nc1ccccc1[N+](=O)[O-]
+  Library size: 199 molecules
+
+[3/8] Preprocessing query spectrum ...
+  Grid: 1800 points (400.0-4000.0 cm^-1)
+  Peaks detected: 20
+
+[4/8] Preprocessing library spectra ...
+  Processed 199 spectra in 0.05s
+
+[5/8] Encoding query spectrum ...
+  Embedding dim: 32
+
+[6/8] Retrieving Top-20 candidates ...
+  Encoded 199 library spectra in 12.50s
+
+[7/8] Reranking to Top-3 ...
+
+  Top-3 Candidates:
+  Rank    Score  Hit? SMILES
+  ------------------------------------------------
+     1   0.9158       COC(=O)C(Cl)(CCl)CCl
+     2   0.9106       COc1ccc(N2CCN(C)c3ccccc3C2)cc1
+     3   0.9067       COC(O)=NC(C)(C)c1ccccc1
+
+  Ground truth in Top-3: NO
+
+[8/8] Generating outputs in 05_outputs/ ...
+  Saved: 05_outputs/topk_candidates.csv
+  Saved: 05_outputs/spectrum_overlay.png
+  Saved: 05_outputs/attention_heatmap.png
+  Saved: 05_outputs/molecule_grid.png
+  Saved: 05_outputs/ablation_results.csv
+  Saved: 05_outputs/trace_log.json
+
+============================================================
+Demo completed successfully!
+============================================================

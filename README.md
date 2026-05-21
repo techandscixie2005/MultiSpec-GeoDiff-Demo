@@ -11,7 +11,8 @@
 - Feishu-style demo explanation: [`02_demo_document/DEMO说明.md`](02_demo_document/DEMO说明.md)
 - Demo explanation PDF: [`02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf`](02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf)
 - Demo explanation Markdown: [`02_demo_document/demo_report.md`](02_demo_document/demo_report.md)
-- Main command: `python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5`
+- Main command (Quick Start): `python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5`
+- Reproduce committed example outputs: `python 03_code/run_demo.py --query_id 5 --data 04_data/IR_nist_200.jsonl --top_k 3`
 - Tests: `PYTHONPATH=03_code/src pytest 03_code/tests -q`
 
 > **Stage scope:** Stage-I (IR retrieval and reranking) is implemented. Stage-II (graph diffusion, pairwise distance) and Stage-III (TFN-Transformer, chirality-aware tensor channels) are roadmap-only interfaces.
@@ -47,9 +48,22 @@ components.**
 git clone https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo.git
 cd MultiSpec-GeoDiff-Demo
 pip install -r 03_code/requirements.txt
+
+# Quick start (query_id=0, top_k=5)
 python 03_code/run_demo.py --query_id 0 --data 04_data/IR_nist_200.jsonl --top_k 5
+
+# Reproduce the committed example outputs (query_id=5, top_k=3)
+python 03_code/run_demo.py --query_id 5 --data 04_data/IR_nist_200.jsonl --top_k 3
+
+# Run tests
 PYTHONPATH=03_code/src pytest 03_code/tests -q
 ```
+
+Both demo commands above are independently reproducible and produce deterministic
+outputs (bit-identical CSVs across repeated runs). The committed example
+outputs under `05_outputs/` were generated with `--query_id 5 --top_k 3`.
+See `REPRODUCIBILITY_AUDIT.md` for the full independent audit (fresh venv,
+22/22 tests pass, fully deterministic).
 
 ## Expected outputs
 

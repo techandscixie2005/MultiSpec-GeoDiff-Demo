@@ -1,0 +1,6 @@
+rank,smiles,retrieval_score,cosine_similarity,l1_similarity,peak_match,forward_score,final_score,is_ground_truth
+1,CN(C)CC1CCCCC1=O,1.0,0.9662,0.7236,0.8154,0.8482,0.8937,False
+2,N#Cc1c[nH][nH]c1=N,1.0,0.965,0.7062,0.8295,0.8467,0.8927,False
+3,Oc1ccc(C2CCCCC2)cc1Br,1.0,0.9811,0.7867,0.7255,0.8461,0.8923,False
+4,C#CCCN(C)Cc1ccccc1,1.0,0.9709,0.7235,0.7847,0.8408,0.8886,False
+5,OC(c1ccccn1)(C1CC1)C1CC1,1.0,0.976,0.7572,0.7436,0.8406,0.8884,False

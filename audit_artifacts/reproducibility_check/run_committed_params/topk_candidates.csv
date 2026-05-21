@@ -1,0 +1,4 @@
+rank,smiles,retrieval_score,cosine_similarity,l1_similarity,peak_match,forward_score,final_score,is_ground_truth
+1,COC(=O)C(Cl)(CCl)CCl,1.0,0.9747,0.8003,0.8326,0.8797,0.9158,False
+2,COc1ccc(N2CCN(C)c3ccccc3C2)cc1,1.0,0.9782,0.8042,0.7992,0.8723,0.9106,False
+3,COC(O)=NC(C)(C)c1ccccc1,1.0,0.9816,0.8254,0.7546,0.8667,0.9067,False
