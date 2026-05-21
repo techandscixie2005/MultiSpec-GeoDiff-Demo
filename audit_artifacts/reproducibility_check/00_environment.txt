@@ -1,0 +1,5 @@
+Commit: 55c43dcf25b9772dba563bf8af659bdb5e2f2171
+Branch: audit/reproducibility-check
+Python: Python 3.10.18
+OS: Linux XiangYu-Xie 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+Date: 2026-05-21

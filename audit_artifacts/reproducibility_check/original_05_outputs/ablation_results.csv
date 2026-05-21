@@ -1,0 +1,11 @@
+rank_retrieval,smiles,raw_cosine,retrieval_score,full_pipeline_score,rank_final,is_ground_truth
+1,OC(=NC1CC1)C1CC1,0.9725,1.0,,,
+2,COC(O)=NC(C)(C)c1ccccc1,0.9816,1.0,0.9067,3.0,False
+3,CCC(COP(=O)(Oc1cc(C)cc(C)c1)Oc1cc(C)cc(C)c1)CC(C)C,0.9683,1.0,,,
+4,CC(C)=C1CCC(C)CC1,0.9589,1.0,,,
+5,CC(O)=NCC(CN(C)C)(c1ccccc1)c1ccccc1,0.975,1.0,,,
+6,c1ccc(N=c2[nH][nH]c(=Nc3ccccc3)s2)cc1,0.97,1.0,,,
+7,CNc1ccccc1C(O)=Nc1cc(OC)c(OC)c(OC)c1,0.9746,1.0,,,
+8,CC(=O)OCC#CCOC(C)=O,0.9723,1.0,,,
+9,CN1C(=O)OC(C)(C)C1=O,0.9695,1.0,,,
+10,CC(C)C(=O)OC(C)(C)C,0.9709,1.0,,,
