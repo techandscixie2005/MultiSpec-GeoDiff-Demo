@@ -79,6 +79,11 @@
 % ======================================================================
 \demotitle
 
+{\centering
+{\small\bfseries 谢翔宇\quad 中国科学技术大学\quad \href{mailto:xxy220348@mail.ustc.edu.cn}{xxy220348@mail.ustc.edu.cn}}\par
+\vspace{4pt}
+}
+
 % ======================================================================
 % INFO CARD (first thing on page 1)
 % ======================================================================
@@ -126,6 +131,8 @@ $\;\rightarrow\;$ \textbf{Top-K 候选分子}
 
 \textbf{定位说明：} 本 Demo 不是训练完备的生成模型，也不是生产级未知物鉴定系统。它展示的是一个可追溯的 AI-for-Science 工作流——在真实实验数据上验证``候选提出 + 前向一致性校验''的闭环思想，符合实习项目对可行性、逻辑推理与创新性展示的要求。
 
+{\small\color{midblue}\textbf{Current implementation validates the Stage-I single-modality IR loop. Multimodal fusion, graph diffusion, pairwise-distance prediction, and TFN/SE(3)-equivariant refinement are planned extensions, not completed components.}}
+
 % ======================================================================
 % SECTION 2: CORE CAPABILITIES
 % ======================================================================
@@ -168,6 +175,8 @@ TFN/SE(3) 等变模块 & 接口原型 & \texttt{tfn\_transformer\_stub.py} \\
 \caption{Stage-I Demo 工作流。实心蓝色模块为已实现的 Stage-I 检索/重排闭环（200 条 NIST 实验 IR 光谱）；虚线模块为图扩散、pairwise 距离预测及 TFN/SE(3) 等变细化的未来接口，非本 Demo 已完成功能。}
 \label{fig:workflow}
 \end{figure}
+
+The demo accepts a query IR spectrum, compares it against a 199-molecule NIST IR candidate library, retrieves an initial Top-M set by cosine similarity, and reranks candidates using three spectral consistency metrics (cosine similarity, L1 distance, and peak match). It reports Top-K candidates together with molecular structures, input-versus-candidate spectral overlays, coordinate-aware attention maps, and a machine-readable trace log. This workflow tests Stage-I loop feasibility under reproducible conditions; it is not a production unknown-compound identification system.
 
 \subsection{输入与输出}
 
