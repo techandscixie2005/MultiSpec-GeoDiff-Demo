@@ -176,7 +176,7 @@ TFN/SE(3) 等变模块 & 接口原型 & \texttt{tfn\_transformer\_stub.py} \\
 \label{fig:workflow}
 \end{figure}
 
-The demo accepts a query IR spectrum, compares it against a 199-molecule NIST IR candidate library, retrieves an initial Top-M set by cosine similarity, and reranks candidates using three spectral consistency metrics (cosine similarity, L1 distance, and peak match). It reports Top-K candidates together with molecular structures, input-versus-candidate spectral overlays, coordinate-aware attention maps, and a machine-readable trace log. This workflow tests Stage-I loop feasibility under reproducible conditions; it is not a production unknown-compound identification system.
+Demo 接受一条查询 IR 光谱，与包含 199 个分子的 NIST IR 候选库逐一比对，通过余弦相似度召回初始 Top-M 候选集，再由三项谱图一致性指标（余弦相似度、L1 距离和峰匹配）进行重排，最终输出 Top-K 候选分子及其分子结构图、查询与候选光谱叠加图、坐标感知注意力热图和可机读的 trace log。本工作流在可复现条件下验证 Stage-I 可行性闭环，并非生产级未知物鉴定系统。
 
 \subsection{输入与输出}
 
