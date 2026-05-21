@@ -1,10 +1,13 @@
 # MultiSpec-GeoDiff: Stage-I Demo for Spectra-driven Molecular Structure Inversion
 
+[![Tests](https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo/actions/workflows/tests.yml/badge.svg)](https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo/actions/workflows/tests.yml)
+
 > **Final DP Technology internship demo submission.**
 
 **Final submission entry:**
 - GitHub repo: [https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo](https://github.com/techandscixie2005/MultiSpec-GeoDiff-Demo)
 - Project proposal: [`01_project_proposal/proposal.md`](01_project_proposal/proposal.md)
+- Project proposal PDF: [`submission.pdf`](submission.pdf) — Section 1 is the official 500-character project proposal; later sections are supplementary technical notes.
 - Feishu-style demo explanation: [`02_demo_document/DEMO说明.md`](02_demo_document/DEMO说明.md)
 - Demo explanation PDF: [`02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf`](02_demo_document/MultiSpec-GeoDiff_Demo_说明.pdf)
 - Demo explanation Markdown: [`02_demo_document/demo_report.md`](02_demo_document/demo_report.md)
@@ -21,6 +24,11 @@ This demo validates Stage-I feasibility on **200 experimental NIST IR spectra**.
 Given a query IR spectrum, the pipeline retrieves and ranks candidate molecules
 from a 199-molecule library using coordinate-aware spectral encoding,
 spectral-distance-bias attention, and forward-spectrum reranking.
+
+**Current implementation validates the Stage-I single-modality IR loop.
+Multimodal fusion, graph diffusion, pairwise-distance prediction, and
+TFN/SE(3)-equivariant refinement are planned extensions, not completed
+components.**
 
 ## Honest scope
 
